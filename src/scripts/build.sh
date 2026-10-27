@@ -131,7 +131,7 @@ if [ ! -d "$PKG_CACHE_DIRECTORY/$DEBOOTSTRAP_CACHE_DIRECTORY" ] ; then
 fi
 
 echo "Copy debootstrap package cache"
-rsync --archive "$PKG_CACHE_DIRECTORY/$DEBOOTSTRAP_CACHE_DIRECTORY/" "$BUILD_DIRECTORY/chroot/"
+rsync --archive --delete "$PKG_CACHE_DIRECTORY/$DEBOOTSTRAP_CACHE_DIRECTORY/" "$BUILD_DIRECTORY/chroot/"
 RET=$?
 if [[ $RET -ne 0 ]]; then
     echo "Failed to copy"
