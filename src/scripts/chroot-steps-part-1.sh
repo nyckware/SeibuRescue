@@ -351,6 +351,8 @@ pkgs_specific_to_ubuntu2404_noble=(
                        "exfatprogs"
                        # Add support for crypto volumes mount (luks, bitlocker, crypt)
                        "libblockdev-crypto3"
+                       "libblockdev-plugins-all"
+                       "udisks2-lvm2"
                        # "Legacy "local authority" (.pkla) backend for polkitd" required so polkit works on Mantic
                        # FIXME: Can probably remove with the recent introduction of new Javascript-based rules file
                        "polkitd-pkla"
@@ -650,17 +652,17 @@ touch /etc/NetworkManager/conf.d/10-globally-managed-devices.conf
 
 update_logind_conf_to_ignore_laptop_lid_switch
 
-# Prevent GParted from launching if there is an instance of Rescuezilla running.
+# Prevent GParted from launching if there is an instance of SeibuRescue running.
 #
 cat << EOF > /tmp/gparted.rescuezilla.check.sh
 #!/bin/sh
 #
-# Cannot launch GParted if Rescuezilla is running.
+# Cannot launch GParted if SeibuRescue is running.
 #
 if test "z\`ps -e | grep rescuezillapy\`" != "z"; then
-        MESSAGE="Cannot launch GParted because the process rescuezillapy is running.\n\nClose Rescuezilla then try again."
+        MESSAGE="Cannot launch GParted because the process rescuezillapy is running.\n\nClose SeibuRescue then try again."
         printf "\$MESSAGE"
-        yad --center --width 300 --title="\$TITLE." --button="OK:0" --text "\$MESSAGE"
+        yad --center --width 300 --title="SeibuRescue" --button="OK:0" --text "\$MESSAGE"
         exit 1
 fi
 EOF
