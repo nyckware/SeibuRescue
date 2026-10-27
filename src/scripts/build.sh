@@ -253,10 +253,8 @@ if [[ $? -ne 0 ]]; then
 fi
 
 # Create desktop icon shortcuts
-ln -s /usr/share/applications/rescuezilla.desktop "$BUILD_DIRECTORY/chroot/home/ubuntu/Desktop/rescuezilla.desktop"
-ln -s /usr/share/applications/org.xfce.mousepad.desktop "$BUILD_DIRECTORY/chroot/home/ubuntu/Desktop/mousepad.desktop"
-ln -s /usr/share/applications/gparted.desktop "$BUILD_DIRECTORY/chroot/home/ubuntu/Desktop/gparted.desktop"
-ln -s /usr/share/applications/org.gnome.DiskUtility.desktop "$BUILD_DIRECTORY/chroot/home/ubuntu/Desktop/gnome-disks.desktop"
+ln -sf /usr/share/applications/rescuezilla.desktop "$BUILD_DIRECTORY/chroot/home/ubuntu/Desktop/rescuezilla.desktop"
+ln -sf /usr/share/applications/org.gnome.DiskUtility.desktop "$BUILD_DIRECTORY/chroot/home/ubuntu/Desktop/gnome-disks.desktop"
 
 # Process GRUB locale files
 pushd "$BUILD_DIRECTORY/image/boot/grub/locale/"
