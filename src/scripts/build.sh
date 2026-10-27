@@ -200,6 +200,13 @@ if [[ $RET -ne 0 ]]; then
     exit 1
 fi
 
+# The official packages.mozilla.org repo is only for modern Ubuntu (Noble/Jammy, 64-bit).
+# On Ubuntu 18.04 Bionic, Firefox is available natively as a deb in the Ubuntu repositories.
+if [ "$CODENAME" == "bionic" ] || [ "$ARCH" == "i386" ]; then
+    rm -f "$BUILD_DIRECTORY/chroot/etc/apt/sources.list.d/mozilla.list"
+    rm -f "$BUILD_DIRECTORY/chroot/etc/apt/preferences.d/99_mozilla"
+fi
+
 if  [ "$IS_INTEGRATION_TEST" == "true" ]; then
     LINUX_QUERY_SERVER_INSTALLER="$BASEDIR/src/integration-test/scripts/install-linux-query-tcp-server.sh"
     rsync --archive "$LINUX_QUERY_SERVER_INSTALLER" "$BUILD_DIRECTORY/chroot/"
