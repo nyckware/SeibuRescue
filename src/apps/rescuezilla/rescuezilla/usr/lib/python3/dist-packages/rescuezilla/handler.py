@@ -380,17 +380,7 @@ class Handler:
         self.builder.get_object("clone_step6_perform_action_combobox").set_active(0)
 
     def display_backup_wizard(self, button):
-        self.mode = Mode.BACKUP
-        self.drive_query.start_query(self._display_error_message_callback)
-        self.main_statusbar.pop(self.main_statusbar.get_context_id("version"))
-        self.current_page = Page.BACKUP_SOURCE_DRIVE_SELECTION
-        self.builder.get_object("mode_tabs").set_current_page(1)
-        self.builder.get_object("backup_tabs").set_current_page(0)
-        # Re-enable the forward/previous navigation buttons
-        self.builder.get_object("button_back").set_sensitive(True)
-        self.builder.get_object("button_next").set_sensitive(True)
-        # Remove access to any summary pages from prior operations
-        self.has_prior_summary_page = False
+        pass
 
     def display_restore_wizard(self, button):
         self.mode = Mode.RESTORE
@@ -419,20 +409,7 @@ class Handler:
         self.has_prior_summary_page = False
 
     def display_clone_wizard(self, button):
-        self.mode = Mode.CLONE
-        self.main_statusbar.pop(self.main_statusbar.get_context_id("version"))
-        self.builder.get_object("mode_tabs").set_current_page(4)
-        self.builder.get_object("clone_tabs").set_current_page(0)
-        self.current_page = Page.CLONE_INTRODUCTION
-        # Re-enable the forward/previous navigation buttons
-        self.builder.get_object("button_back").set_sensitive(True)
-        self.builder.get_object("button_next").set_sensitive(True)
-        # Remove access to any summary pages from prior operations
-        self.has_prior_summary_page = False
-        self.builder.get_object("button_mount").set_sensitive(False)
-        self.builder.get_object("button_open_file_manager").set_sensitive(False)
-        self.image_explorer_manager.set_parts_of_image_explorer_page_sensitive(True)
-        self.is_partition_mounted = False
+        pass
 
     def display_image_explorer_wizard(self, button):
         self.mode = Mode.IMAGE_EXPLORER
