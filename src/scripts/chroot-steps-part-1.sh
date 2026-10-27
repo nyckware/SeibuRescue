@@ -449,11 +449,11 @@ lang_codes_f=(
 )
 
 # Prepare list of language packs to install
-language_pack_gnome_base_pkgs=()
+language_pack_gnome_base_pkg=()
 firefox_locale_pkgs=()
+
 for lang in "${lang_codes[@]}"
 do
-     firefox_locale_pkgs+=("firefox-l10n-$lang")
      language_pack_gnome_base_pkg+=("language-pack-gnome-$lang-base")
 done
 
@@ -462,10 +462,25 @@ do
      language_pack_gnome_base_pkg+=("language-pack-gnome-$lang-base")
 done
 
-for lang in "${lang_codes_f[@]}"
-do
-     firefox_locale_pkgs+=("firefox-l10n-$lang")
-done
+if [ "$CODENAME" == "bionic" ] || [ "$ARCH" == "i386" ]; then
+    for lang in "${lang_codes[@]}"
+    do
+         firefox_locale_pkgs+=("firefox-locale-$lang")
+    done
+    for lang in "${lang_codes_g[@]}"
+    do
+         firefox_locale_pkgs+=("firefox-locale-$lang")
+    done
+else
+    for lang in "${lang_codes[@]}"
+    do
+         firefox_locale_pkgs+=("firefox-l10n-$lang")
+    done
+    for lang in "${lang_codes_f[@]}"
+    do
+         firefox_locale_pkgs+=("firefox-l10n-$lang")
+    done
+fi
 
 # Packages common to both  32-bit and 64-bit build
 # TODO: Documentation each package with why these particular packages are present,
@@ -569,10 +584,14 @@ common_pkgs=("discover"
              "flashrom"
              "hashdeep"
              "zstd"
-             "libxxhash0"
              "dislocker"
-             "btop"
 )
+
+if [ "$CODENAME" == "bionic" ]; then
+    common_pkgs=("${common_pkgs[@]}" "htop")
+else
+    common_pkgs=("${common_pkgs[@]}" "libxxhash0" "btop")
+fi
 
 # Install openssh-server only if the IS_INTEGRATION_TEST variable is enable
 if  [ "$IS_INTEGRATION_TEST" == "true" ]; then

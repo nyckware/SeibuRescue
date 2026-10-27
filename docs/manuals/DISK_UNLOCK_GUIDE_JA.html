@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>暗号化ディスクロック解除マニュアル - SeibuRescue</title>
+    <style>
+:root {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-color: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --accent: #38bdf8;
+    --code-bg: #090d16;
+    --callout-info-bg: #1e3a5f;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-color: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+        --accent: #0284c7;
+        --code-bg: #f1f5f9;
+        --callout-info-bg: #e0f2fe;
+    }
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lang-switch {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.lang-btn {
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    transition: all 0.2s;
+}
+
+.lang-btn.active {
+    background-color: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
+}
+
+.lang-btn:hover:not(.active) {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 2rem;
+    margin-top: 0;
+    color: var(--accent);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.8rem;
+}
+
+h2 {
+    font-size: 1.4rem;
+    margin-top: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.4rem;
+    color: var(--text-color);
+}
+
+h3 {
+    font-size: 1.15rem;
+    margin-top: 1.5rem;
+    color: var(--accent);
+}
+
+code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 0.9em;
+    padding: 0.2em 0.4em;
+    background-color: var(--code-bg);
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+pre {
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    overflow-x: auto;
+}
+
+pre code {
+    background-color: transparent;
+    padding: 0;
+    border: none;
+    font-size: 0.95em;
+    color: var(--text-color);
+}
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    margin: 1.5rem 0;
+    padding: 0.8rem 1.2rem;
+    background-color: var(--callout-info-bg);
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+}
+
+th, td {
+    border: 1px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+th {
+    background-color: var(--bg-color);
+    font-weight: 600;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 2rem 0;
+}
+
+ul, ol {
+    padding-left: 1.5rem;
+}
+
+li {
+    margin-bottom: 0.4rem;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+</style>
+</head>
+<body>
+    <header class="header">
+        <div class="brand">
+            <span>🛡️</span> SeibuRescue Manual
+        </div>
+        <nav class="lang-switch">
+            <a href="DISK_UNLOCK_GUIDE.html" class="lang-btn ">English</a>
+            <a href="DISK_UNLOCK_GUIDE_JA.html" class="lang-btn active">日本語</a>
+        </nav>
+    </header>
+    <main class="container">
+        <h1 id="seiburescue-bitlocker-luks">SeibuRescue - 暗号化ディスク解除マニュアル（BitLocker &amp; LUKS 対応）</h1>
+<p>本マニュアルでは、<strong>SeibuRescue</strong> 環境において、<strong>Windows BitLocker</strong> および <strong>Linux LUKS</strong> で暗号化されたディスク／パーティションのロックを解除し、データをマウントしてアクセスするための手順を解説します。</p>
+<hr />
+<h2 id="_1">目次</h2>
+<ol>
+<li><a href="#1-概要と事前準備">概要と事前準備</a></li>
+<li><a href="#2-手順-1-暗号化パーティションの確認デバイス名特定">手順 1: 暗号化パーティションの確認（デバイス名特定）</a></li>
+<li><a href="#3-方法-1-guiツールdisks--ディスクによる解除">方法 1: GUIツール（Disks / ディスク）による解除</a></li>
+<li><a href="#4-方法-2-dislocker-による-bitlocker-解除windows-1011-推奨">方法 2: <code>dislocker</code> による BitLocker 解除（Windows 10/11 推奨）</a></li>
+<li><a href="#5-方法-3-cryptsetup-コマンドによる解除">方法 3: <code>cryptsetup</code> コマンドによる解除</a></li>
+<li><a href="#6-方法-4-linux-luks-暗号化パーティションの解除">方法 4: Linux LUKS 暗号化パーティションの解除</a></li>
+<li><a href="#7-トラブルシューティングとよくある質問faq">トラブルシューティングとよくある質問（FAQ）</a></li>
+</ol>
+<hr />
+<h2 id="1">1. 概要と事前準備</h2>
+<h3 id="seiburescue">SeibuRescue に収録されているツール</h3>
+<p>SeibuRescue には、以下のディスク復号・管理ツールが標準搭載されています：
+- <strong>GNOME Disks（ディスク / <code>gnome-disks</code>）</strong>: デスクトップ上にショートカットがあるGUIディスク管理ツール。
+- <strong><code>dislocker</code></strong>: Windows BitLocker 専用の復号ユーティリティ（FUSEベース）。回復キー、パスワード、<code>.bek</code> キーファイルによる確実な復号に対応。
+- <strong><code>cryptsetup</code></strong>: Linux カーネル（dm-crypt）ネイティブの暗号化管理ツール（BitLocker <code>--type bitlk</code> および LUKS に対応）。
+- <strong><code>libblockdev-plugins-all</code></strong>: 暗号化プラグインライブラリ群。</p>
+<h3 id="bitlocker">事前に用意するもの（BitLocker の場合）</h3>
+<p>Windows の BitLocker ドライブを解除するには、以下のいずれかの情報が必要です：
+- <strong>BitLocker 回復キー（48桁の数値）</strong>: 6桁×8グループの数字（例: <code>123456-789012-345678-901234-567890-123456-789012-345678</code>）。
+  - ※ Microsoft アカウントに紐付いている場合、<a href="https://account.microsoft.com/devices/recoverykey">https://account.microsoft.com/devices/recoverykey</a> から確認可能です。
+- <strong>ユーザーパスワード</strong>: パスワード保護が設定されている場合。
+- <strong>回復キーファイル（<code>.bek</code>）</strong>: 初期設定時にUSBメモリ等へ保存されたファイル。</p>
+<hr />
+<h2 id="2-1">2. 手順 1: 暗号化パーティションの確認（デバイス名特定）</h2>
+<p>ターミナルを開き（デスクトップ右クリック → 「Open Terminal」またはアプリケーションメニューから起動）、以下のコマンドを実行します：</p>
+<pre><code class="language-bash">lsblk -f
+</code></pre>
+<p>出力結果の <code>FSTYPE</code> 列を確認し、<code>BitLocker</code> または <code>crypto_LUKS</code> と表示されているパーティションを探します：</p>
+<pre><code class="language-text">NAME        FSTYPE      LABEL       UUID                                 FSAVAIL FSUSE% MOUNTPOINTS
+nvme0n1                                                                                 
+├─nvme0n1p1 vfat        SYSTEM      A1B2-C3D4                                           
+├─nvme0n1p2                                                                             
+├─nvme0n1p3 BitLocker   Windows     01234567-89AB-CDEF...                               
+└─nvme0n1p4 ntfs        Recovery    FEDCBA98-7654-3210...                               
+</code></pre>
+<p>上記の例では、対象パーティションは <code>/dev/nvme0n1p3</code> です。お使いの環境のデバイス名（例: <code>/dev/nvme0n1p3</code> や <code>/dev/sda3</code>）を控えておきます。</p>
+<p>メタデータの詳細を確認したい場合は、以下を実行します：</p>
+<pre><code class="language-bash">sudo cryptsetup bitlkDump /dev/nvme0n1p3
+</code></pre>
+<hr />
+<h2 id="3-1-guidisks">3. 方法 1: GUIツール（Disks / ディスク）による解除</h2>
+<ol>
+<li>デスクトップ上の <strong>Disks（ディスク）</strong> アイコンをダブルクリックして開きます。</li>
+<li>左側のリストから該当するドライブを選択します。</li>
+<li>ボリューム構成図から、鍵アイコン（🔒）が付いている暗号化パーティションをクリックします。</li>
+<li>ボリューム下部にある <strong>アンロック（鍵/再生アイコン）</strong> ボタンをクリックします。</li>
+<li>パスフレーズまたは 48桁の回復キーを入力して解除を実行します。</li>
+</ol>
+<blockquote>
+<p><strong>⚠️ 「Operation not supported（操作はサポートされていません）」と表示される場合:</strong>
+最新の Windows 10/11 の BitLocker（書き込み時暗号化「Encrypt-on-Write」やメタデータ拡張、TPM保護など）では、GUI のバックエンド（udisks2）が対応できず、このエラーが発生することがあります。
+<strong>このエラーが出た場合は、以下の「方法 2（<code>dislocker</code>）」を使用してください。</strong></p>
+</blockquote>
+<hr />
+<h2 id="4-2-dislocker-bitlocker-windows-1011">4. 方法 2: <code>dislocker</code> による BitLocker 解除（Windows 10/11 推奨）</h2>
+<p><code>dislocker</code> は Linux 上で BitLocker パーティションを解除する最も堅牢かつ互換性の高いツールです。</p>
+<h3 id="21">ステップ 2.1: マウント用ディレクトリの作成</h3>
+<p>ターミナルで仮想ディスク用とファイルシステム用のフォルダを作成します：</p>
+<pre><code class="language-bash">sudo mkdir -p /media/bitlocker /media/windows
+</code></pre>
+<h3 id="22-dislocker">ステップ 2.2: <code>dislocker</code> で暗号化を解除</h3>
+<p><strong>パターン A: 48桁の回復キーを使用する場合（最も確実）</strong>
+パーティション名（<code>/dev/nvme0n1p3</code>）と48桁の回復キーを指定します：</p>
+<pre><code class="language-bash">sudo dislocker -v -V /dev/nvme0n1p3 -p123456-789012-345678-901234-567890-123456-789012-345678 -- /media/bitlocker
+</code></pre>
+<p><strong>パターン B: パスワードを使用する場合</strong></p>
+<pre><code class="language-bash">sudo dislocker -v -V /dev/nvme0n1p3 -u&quot;設定したパスワード&quot; -- /media/bitlocker
+</code></pre>
+<p><strong>パターン C: <code>.bek</code> キーファイルを使用する場合</strong></p>
+<pre><code class="language-bash">sudo dislocker -v -V /dev/nvme0n1p3 -f /path/to/keyfile.bek -- /media/bitlocker
+</code></pre>
+<p>コマンドが正常に完了すると、<code>/media/bitlocker/</code> ディレクトリ内に復号された仮想イメージファイル <code>dislocker-file</code> が生成されます。</p>
+<h3 id="23">ステップ 2.3: 復号されたドライブをマウント</h3>
+<p>生成された仮想ファイルをマウントして、通常のフォルダとして中身にアクセスします：</p>
+<p><strong>読み書き可能（Read-Write）でマウントする場合:</strong></p>
+<pre><code class="language-bash">sudo mount -o loop,rw /media/bitlocker/dislocker-file /media/windows
+</code></pre>
+<p><strong>読み取り専用（Read-Only）でマウントする場合（データ保護・高速スタートアップ時推奨）:</strong></p>
+<pre><code class="language-bash">sudo mount -o loop,ro /media/bitlocker/dislocker-file /media/windows
+</code></pre>
+<p>これで、<code>/media/windows</code> フォルダから復号されたすべてのファイル・ディレクトリにアクセスできるようになります。</p>
+<h3 id="24">ステップ 2.4: 作業終了時のアンマウント（安全な切断）</h3>
+<p>作業が完了したら、以下の順序でアンマウントします：</p>
+<pre><code class="language-bash">sudo umount /media/windows
+sudo umount /media/bitlocker
+</code></pre>
+<hr />
+<h2 id="5-3-cryptsetup">5. 方法 3: <code>cryptsetup</code> コマンドによる解除</h2>
+<p>Linux カーネルの標準機構（dm-crypt）を利用してダイレクトにマッピングする方法です。</p>
+<h3 id="31">ステップ 3.1: ボリュームのオープン</h3>
+<p>以下のコマンドを実行し、仮想デバイス名（例: <code>bitlk_drive</code>）を指定して開きます：</p>
+<pre><code class="language-bash">sudo cryptsetup open --type bitlk /dev/nvme0n1p3 bitlk_drive
+</code></pre>
+<p>プロンプトが表示されたら、BitLocker パスワード、または 48桁の回復キーを入力（ペースト）します。</p>
+<h3 id="32">ステップ 3.2: 解除されたボリュームのマウント</h3>
+<p>解除が成功すると、<code>/dev/mapper/bitlk_drive</code> としてアクセス可能になります：</p>
+<pre><code class="language-bash">sudo mkdir -p /media/windows
+sudo mount /dev/mapper/bitlk_drive /media/windows
+</code></pre>
+<h3 id="33">ステップ 3.3: 作業終了時の切断</h3>
+<pre><code class="language-bash">sudo umount /media/windows
+sudo cryptsetup close bitlk_drive
+</code></pre>
+<hr />
+<h2 id="6-4-linux-luks">6. 方法 4: Linux LUKS 暗号化パーティションの解除</h2>
+<p>Linux システムの LUKS 暗号化パーティションを解除する手順です。</p>
+<h3 id="guidisks">GUI（Disks）で解除する場合:</h3>
+<p><strong>Disks</strong> アプリで該当パーティションを選択し、アンロックアイコンをクリックしてパスフレーズを入力します。</p>
+<h3 id="_2">コマンドラインで解除する場合:</h3>
+<pre><code class="language-bash"># 1. LUKS デバイスを開く
+sudo cryptsetup luksOpen /dev/sda2 luks_drive
+
+# 2. マウントする
+sudo mkdir -p /media/linux_drive
+sudo mount /dev/mapper/luks_drive /media/linux_drive
+
+# 3. 作業終了時の切断
+sudo umount /media/linux_drive
+sudo cryptsetup luksClose luks_drive
+</code></pre>
+<hr />
+<h2 id="7-faq">7. トラブルシューティングとよくある質問（FAQ）</h2>
+<h3 id="q1-gnome-disks-operation-not-supported">Q1: GNOME Disks で「Operation not supported（操作はサポートされていません）」と出る理由は？</h3>
+<p><strong>回答</strong>: 
+Windows 10/11 の一部の BitLocker 構成（暗号化変換処理の途中、Encrypt-on-Write、TPM のみの構成など）は、カーネルの <code>cryptsetup bitlk</code> では直接開けず <code>ENOTSUP</code> エラーとなります。Disks アプリは内部でこの機能を利用しているため同様のエラーになります。<br />
+<strong>この場合は、必ず「方法 2（<code>dislocker</code>）」と 48桁の回復キーをご利用ください。</strong></p>
+<h3 id="q2-the-disk-contains-an-unclean-file-system">Q2: マウント時に「The disk contains an unclean file system（高速スタートアップまたは休止状態）」とエラーが出る</h3>
+<p><strong>回答</strong>: 
+Windows が「高速スタートアップ」有効のままシャットダウンされたか、休止状態で電源が切られた状態です。<br />
+ファイル破損を防ぐため、以下のように読み取り専用（<code>ro</code>）でマウントしてください：</p>
+<pre><code class="language-bash">sudo mount -o loop,ro /media/bitlocker/dislocker-file /media/windows
+</code></pre>
+<h3 id="q3-48-bitlocker">Q3: 48桁の BitLocker 回復キーはどこで確認できますか？</h3>
+<p><strong>回答</strong>:
+1. 個人用 Microsoft アカウントの場合：<a href="https://account.microsoft.com/devices/recoverykey">https://account.microsoft.com/devices/recoverykey</a> にサインインして確認。
+2. 職場または学校のアカウントの場合：Azure Active Directory / Microsoft Intune の管理ポータルから確認。
+3. 初期セットアップ時に印刷した用紙、または USB メモリ内に保存されたテキストファイル。</p>
+        <footer class="footer">
+            SeibuRescue &bull; System Recovery & Disk Management Utilities
+        </footer>
+    </main>
+</body>
+</html>

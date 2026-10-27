@@ -30,6 +30,7 @@ ARCH="${ARCH:-INVALID}"
 URL="INVALID"
 
 # One-higher than directory containing this build script
+git config --global --add safe.directory "*" 2>/dev/null || true
 BASEDIR="$(git rev-parse --show-toplevel)"
 
 RESCUEZILLA_ISO_FILENAME=rescuezilla.$ARCH.$CODENAME.iso
@@ -130,7 +131,7 @@ if [ ! -d "$PKG_CACHE_DIRECTORY/$DEBOOTSTRAP_CACHE_DIRECTORY" ] ; then
 fi
 
 echo "Copy debootstrap package cache"
-rsync --archive "$PKG_CACHE_DIRECTORY/$DEBOOTSTRAP_CACHE_DIRECTORY/" "$BUILD_DIRECTORY/chroot/"
+rsync --archive --delete "$PKG_CACHE_DIRECTORY/$DEBOOTSTRAP_CACHE_DIRECTORY/" "$BUILD_DIRECTORY/chroot/"
 RET=$?
 if [[ $RET -ne 0 ]]; then
     echo "Failed to copy"
@@ -182,11 +183,13 @@ cp /etc/hosts chroot/etc/hosts
 cp /etc/resolv.conf chroot/etc/resolv.conf
 
 # Copy the CHANGELOG
-rsync --archive "$BASEDIR/CHANGELOG" "$BUILD_DIRECTORY/chroot/usr/share/rescuezilla/"
-RET=$?
-if [[ $RET -ne 0 ]]; then
-    echo "Failed to copy"
-    exit 1
+mkdir -p "$BUILD_DIRECTORY/chroot/usr/share/rescuezilla/"
+if [ -f "$BASEDIR/CHANGELOG" ]; then
+    rsync --archive "$BASEDIR/CHANGELOG" "$BUILD_DIRECTORY/chroot/usr/share/rescuezilla/"
+elif [ -f "$BASEDIR/CHANGELOG.md" ]; then
+    rsync --archive "$BASEDIR/CHANGELOG.md" "$BUILD_DIRECTORY/chroot/usr/share/rescuezilla/"
+else
+    touch "$BUILD_DIRECTORY/chroot/usr/share/rescuezilla/CHANGELOG"
 fi
 
 # Synchronize apt package manager configuration files
@@ -195,6 +198,13 @@ RET=$?
 if [[ $RET -ne 0 ]]; then
     echo "Failed to copy"
     exit 1
+fi
+
+# The official packages.mozilla.org repo is only for modern Ubuntu (Noble/Jammy, 64-bit).
+# On Ubuntu 18.04 Bionic, Firefox is available natively as a deb in the Ubuntu repositories.
+if [ "$CODENAME" == "bionic" ] || [ "$ARCH" == "i386" ]; then
+    rm -f "$BUILD_DIRECTORY/chroot/etc/apt/sources.list.d/mozilla.list"
+    rm -f "$BUILD_DIRECTORY/chroot/etc/apt/preferences.d/99_mozilla"
 fi
 
 if  [ "$IS_INTEGRATION_TEST" == "true" ]; then
@@ -254,6 +264,8 @@ fi
 
 # Create desktop icon shortcuts
 ln -sf /usr/share/applications/rescuezilla.desktop "$BUILD_DIRECTORY/chroot/home/ubuntu/Desktop/rescuezilla.desktop"
+ln -sf /usr/share/applications/org.xfce.mousepad.desktop "$BUILD_DIRECTORY/chroot/home/ubuntu/Desktop/mousepad.desktop"
+ln -sf /usr/share/applications/gparted.desktop "$BUILD_DIRECTORY/chroot/home/ubuntu/Desktop/gparted.desktop"
 ln -sf /usr/share/applications/org.gnome.DiskUtility.desktop "$BUILD_DIRECTORY/chroot/home/ubuntu/Desktop/gnome-disks.desktop"
 
 # Process GRUB locale files
@@ -332,7 +344,15 @@ rm chroot/chroot-steps-part-1.sh chroot/chroot-steps-part-2.sh
 
 mkdir -p image/casper
 # The vmlinuz is a symlink to the exact kernel version, so no need to use the versioned glob.
-cp chroot/boot/vmlinuz image/casper/vmlinuz
+# Ubuntu 20.04+ (Focal, Jammy, Noble) puts symlinks in /boot/vmlinuz
+# Ubuntu 18.04 (Bionic) puts symlinks in /vmlinuz or files in /boot/vmlinuz-*
+if [ -f "chroot/boot/vmlinuz" ]; then
+    cp chroot/boot/vmlinuz image/casper/vmlinuz
+elif [ -e "chroot/vmlinuz" ]; then
+    cp -L chroot/vmlinuz image/casper/vmlinuz
+else
+    cp $(ls -t chroot/boot/vmlinuz-* | head -n 1) image/casper/vmlinuz
+fi
 if [[ $? -ne 0 ]]; then
     echo "Error: Failed to copy vmlinuz image."
     exit 1
@@ -340,7 +360,13 @@ fi
 chmod 644 image/casper/vmlinuz
 
 # The initrd.img is a symlink to the exact initrd version, so no need to use the versioned glob.
-cp chroot/boot/initrd.img image/casper/initrd.lz
+if [ -f "chroot/boot/initrd.img" ]; then
+    cp chroot/boot/initrd.img image/casper/initrd.lz
+elif [ -e "chroot/initrd.img" ]; then
+    cp -L chroot/initrd.img image/casper/initrd.lz
+else
+    cp $(ls -t chroot/boot/initrd.img-* | head -n 1) image/casper/initrd.lz
+fi
 if [[ $? -ne 0 ]]; then
     echo "Error: Failed to copy initrd image."
     exit 1
@@ -405,12 +431,16 @@ if  [ "$IS_INTEGRATION_TEST" == "true" ]; then
     echo "Using lowest possible compression level of 1 to speed up compression for debug builds."
     COMPRESSION_LEVEL=1
 else
-    echo "Using max compression level of 19. The compression time is greatly increased, but the decompression time "
-    echo "is the same as gzip (though uses more memory). The benefit is the compression ratio is improved over gzip."
-    COMPRESSION_LEVEL=19
+    echo "Using balanced zstd compression level (16 by default or COMPRESSION_LEVEL env var)."
+    COMPRESSION_LEVEL="${COMPRESSION_LEVEL:-16}"
 fi
 
-mksquashfs chroot image/casper/filesystem.squashfs -comp zstd -b 1M -Xcompression-level "${COMPRESSION_LEVEL}" -e boot -e /sys
+PROCESSORS=$(nproc)
+if [ "$PROCESSORS" -gt 2 ]; then
+    PROCESSORS=$((PROCESSORS - 1))
+fi
+
+mksquashfs chroot image/casper/filesystem.squashfs -comp zstd -b 1M -Xcompression-level "${COMPRESSION_LEVEL}" -processors "${PROCESSORS}" -e boot -e /sys
 printf $(sudo du -sx --block-size=1 chroot | cut -f1) > image/casper/filesystem.size
 cd image
 
@@ -446,7 +476,7 @@ cp /usr/share/grub/unicode.pf2 "$BUILD_DIRECTORY/image/boot/grub/fonts"
 # Copy the GRUB EFI loader executable for i386 (there is no signed GRUB EFI versions available for i386). Multiple EFI bootloaders for different
 # CPU architectures can safely co-exist (given the different filenames), with the EFI firmware launching the correctly named executable.
 # Also, Bay Trail Intel Atom CPUs apparently have 64-bit CPUs with 32-bit UEFI, so having both i386 and amd64 executable on an amd64 ISO seems good.
-if [[ "$ARCH" == "amd64" ]]; then
+if [ "$ARCH" == "amd64" ] || [ "$ARCH" == "i386" ]; then
     cp /usr/lib/grub/i386-efi/monolithic/grubia32.efi "$BUILD_DIRECTORY/image/EFI/BOOT/BOOTIA32.EFI"
     # Deploy i386 GRUB EFI support files, including loadable modules
     cp -r /usr/lib/grub/i386-efi "$BUILD_DIRECTORY/image/boot/grub/"
