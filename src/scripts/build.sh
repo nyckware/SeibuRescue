@@ -431,12 +431,16 @@ if  [ "$IS_INTEGRATION_TEST" == "true" ]; then
     echo "Using lowest possible compression level of 1 to speed up compression for debug builds."
     COMPRESSION_LEVEL=1
 else
-    echo "Using max compression level of 19. The compression time is greatly increased, but the decompression time "
-    echo "is the same as gzip (though uses more memory). The benefit is the compression ratio is improved over gzip."
-    COMPRESSION_LEVEL=19
+    echo "Using balanced zstd compression level (16 by default or COMPRESSION_LEVEL env var)."
+    COMPRESSION_LEVEL="${COMPRESSION_LEVEL:-16}"
 fi
 
-mksquashfs chroot image/casper/filesystem.squashfs -comp zstd -b 1M -Xcompression-level "${COMPRESSION_LEVEL}" -e boot -e /sys
+PROCESSORS=$(nproc)
+if [ "$PROCESSORS" -gt 2 ]; then
+    PROCESSORS=$((PROCESSORS - 1))
+fi
+
+mksquashfs chroot image/casper/filesystem.squashfs -comp zstd -b 1M -Xcompression-level "${COMPRESSION_LEVEL}" -processors "${PROCESSORS}" -e boot -e /sys
 printf $(sudo du -sx --block-size=1 chroot | cut -f1) > image/casper/filesystem.size
 cd image
 

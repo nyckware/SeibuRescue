@@ -98,8 +98,12 @@ build_version() {
         "umount -lf /home/rescuezilla/build/${make_target//-/.}/chroot/dev/ 2>/dev/null || true; \
          rm -rf /home/rescuezilla/build/${make_target//-/.}" || true
 
-    echo -e "${BLUE}[2/3] Running 'make ${make_target}' inside Docker container...${NC}"
-    docker run --rm --privileged -v "$SCRIPT_DIR:/home/rescuezilla" builder.image make -C /home/rescuezilla "$make_target"
+    local total_cpus
+    total_cpus=$(nproc)
+    local allowed_cpus=$(( total_cpus > 2 ? total_cpus - 1 : 1 ))
+
+    echo -e "${BLUE}[2/3] Running 'make ${make_target}' inside Docker container (using ${allowed_cpus}/${total_cpus} CPUs to prevent host freeze)...${NC}"
+    nice -n 10 docker run --rm --privileged --cpus="${allowed_cpus}" -v "$SCRIPT_DIR:/home/rescuezilla" builder.image make -C /home/rescuezilla "$make_target"
 
     echo -e "${BLUE}[3/3] Verifying and linking generated ISO image...${NC}"
     if [ -f "$SCRIPT_DIR/build/$source_iso" ]; then
