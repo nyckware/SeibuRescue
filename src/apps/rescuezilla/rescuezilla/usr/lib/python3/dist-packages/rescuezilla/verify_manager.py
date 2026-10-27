@@ -191,7 +191,7 @@ class VerifyManager:
                             _("❌")
                             + " "
                             + _(
-                                "The backup's bootloader data is shorter than expected. If the backup contained certain bootloaders like GRUB, during a restore operation Rescuezilla will try and re-install the bootloader."
+                                "The backup's bootloader data is shorter than expected. If the backup contained certain bootloaders like GRUB, during a restore operation SeibuRescue will try and re-install the bootloader."
                             )
                             + "\n"
                         )

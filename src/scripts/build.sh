@@ -379,7 +379,7 @@ do
 done
 
 cat << EOF > image/README.diskdefines
-#define DISKNAME Rescuezilla
+#define DISKNAME SeibuRescue
 #define TYPE binary
 #define TYPEbinary 1
 #define ARCH $ARCH
@@ -396,7 +396,7 @@ cd image/.disk
 touch base_installable
 echo "full_cd/single" > cd_type
 echo "Ubuntu Remix" > info
-echo "https://rescuezilla.com" > release_notes_url
+echo "https://seibushoko.com" > release_notes_url
 cd ../..
 
 rm -rf image/casper/filesystem.squashfs "$RESCUEZILLA_ISO_FILENAME"
@@ -534,7 +534,7 @@ xorrisofs_args=(
                # Output image path
                --output "$BUILD_DIRECTORY/$RESCUEZILLA_ISO_FILENAME"
                # Set filesystem volume ID
-               --volid "Rescuezilla"
+               --volid "SeibuRescue"
                # "Enable Rock Ridge and set user and group id of all files in the ISO image to 0." (prevents files in the ISO image using uid/gid of
                # the user running the build. Also "Grant r-permissions to all. Deny all w-permissions. If any x-permission is set, grant x-permission to all.
                # Remove s-bit and t-bit". This does not affect the Linux root filesystem as it is squashfs-compressed so carries its own file attributes.

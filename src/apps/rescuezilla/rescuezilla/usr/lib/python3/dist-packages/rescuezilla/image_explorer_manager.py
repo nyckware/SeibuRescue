@@ -427,7 +427,7 @@ class ImageExplorerManager:
         else:
             mount_msg = (
                 _("Mounting as read-only…")
-                + "\n\nFor 'gzip' compressed images often the entire backup image needs to be decompressed to a temporary file before a single file can be accessed.\nFor very large backup images this MAY TAKE HOURS depending on the speed of your computer.\n\nFor near-instantaneous file access, a future version of Rescuezilla may switch the default compression away from 'gzip'.\n\nTo cancel the mount operation close this dialog box."
+                + "\n\nFor 'gzip' compressed images often the entire backup image needs to be decompressed to a temporary file before a single file can be accessed.\nFor very large backup images this MAY TAKE HOURS depending on the speed of your computer.\n\nFor near-instantaneous file access, a future version of SeibuRescue may switch the default compression away from 'gzip'.\n\nTo cancel the mount operation close this dialog box."
             )
             please_wait_popup = PleaseWaitModalPopup(
                 self.builder,

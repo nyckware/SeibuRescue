@@ -90,12 +90,12 @@ class RedoBackupLegacyImage:
                     rescuezilla_version_abs_path
                 ).strip()
                 print(
-                    "Backup originally created with Rescuezilla version: "
+                    "Backup originally created with SeibuRescue version: "
                     + self.rescuezilla_version
                 )
         else:
             raise ValueError(
-                "Expected Rescuezilla backup to end with .backup: " + absolute_path
+                "Expected SeibuRescue backup to end with .backup: " + absolute_path
             )
 
         self.last_modified_timestamp = format_datetime(os.stat(absolute_path).st_mtime)
@@ -133,7 +133,7 @@ class RedoBackupLegacyImage:
             # https://github.com/rescuezilla/rescuezilla/wiki/Bugs-in-unofficial-Redo-Backup-updates#bugs-in
             # -chcatzsfs-ubuntu-1310-and-1404-releases-german-language-only
             self.warning_dict[enduser_filename] = _(
-                "The backup's bootloader data is shorter than expected. If the backup contained certain bootloaders like GRUB, during a restore operation Rescuezilla will try and re-install the bootloader."
+                "The backup's bootloader data is shorter than expected. If the backup contained certain bootloaders like GRUB, during a restore operation SeibuRescue will try and re-install the bootloader."
             )
 
         sfdisk_absolute_path = os.path.join(dirname, prefix + ".sfdisk")

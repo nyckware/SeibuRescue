@@ -67,9 +67,9 @@ BASE_CMD="/usr/sbin/rescuezillapy $*"
 # Cannot launch Rescuezilla if GParted is already running.
 #
 if test "z`ps -e | grep gpartedbin`" != "z"; then
-    MESSAGE="Cannot launch Rescuezilla because the process gpartedbin is running.\n\nClose GParted then try again."
+    MESSAGE="Cannot launch SeibuRescue because the process gpartedbin is running.\n\nClose GParted then try again."
     printf "$MESSAGE\n"
-    display_yad "Rescuezilla" "$MESSAGE"
+    display_yad "SeibuRescue" "$MESSAGE"
     exit 1
 fi
 
@@ -77,9 +77,9 @@ fi
 #  Only permit one instance of Rescuezilla to execute at a time
 #
 if test "z`ps -e | grep rescuezillapy`" != "z"; then
-    MESSAGE="The process rescuezillapy is already running.\n\nOnly one rescuezillapy process is permitted."
+    MESSAGE="The process rescuezillapy is already running.\n\nOnly one instance of SeibuRescue is permitted."
     printf "$MESSAGE\n"
-    display_yad "Rescuezilla" "$MESSAGE"
+    display_yad "SeibuRescue" "$MESSAGE"
     exit 1
 fi
 
@@ -93,7 +93,7 @@ if test "x`id -u`" != "x0"; then
     #  privileges.
     #
         if test "xpkexec --disable-internal-agent" = "x"; then
-        echo "Root privileges are required for running Rescuezilla."
+        echo "Root privileges are required for running SeibuRescue."
         $BASE_CMD
         exit 1
     fi

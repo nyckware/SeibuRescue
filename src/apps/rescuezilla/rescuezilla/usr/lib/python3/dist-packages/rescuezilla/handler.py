@@ -506,7 +506,7 @@ class Handler:
                         ):
                             ErrorMessageModalPopup(
                                 self.builder,
-                                "Backup of drives without a partition table *and* no filesystem is not yet supported by current version of Rescuezilla.\n\nSupport for this will be added in a future version.",
+                                "Backup of drives without a partition table *and* no filesystem is not yet supported by current version of SeibuRescue.\n\nSupport for this will be added in a future version.",
                             )
                             return
                         self.selected_drive_key = key
@@ -638,7 +638,7 @@ class Handler:
                         if image.is_needs_decryption:
                             ErrorMessageModalPopup(
                                 self.builder,
-                                "Ecryptfs encrypted images are not supported by current version of Rescuezilla.\n\nSupport for ecryptfs will be improved in a future version.\n\nHowever, as a temporary workaround, it is possible to carefully use the mount command line utility to decrypt the image, and then point Rescuezilla to this ecryptfs mount point and then use Rescuezilla to restore the image as normal.",
+                                "Ecryptfs encrypted images are not supported by current version of SeibuRescue.\n\nSupport for ecryptfs will be improved in a future version.\n\nHowever, as a temporary workaround, it is possible to carefully use the mount command line utility to decrypt the image, and then point SeibuRescue to this ecryptfs mount point and then use SeibuRescue to restore the image as normal.",
                             )
                         else:
                             if isinstance(image, FogProjectImage):
@@ -822,7 +822,7 @@ class Handler:
                         if is_needs_decryption:
                             ErrorMessageModalPopup(
                                 self.builder,
-                                "Ecryptfs encrypted images are not supported by current version of Rescuezilla.\n\nSupport for ecryptfs will be improved in a future version.\n\nHowever, as a temporary workaround, it is possible to carefully use the mount command line utility to decrypt the image, and then point Rescuezilla to this ecryptfs mount point and then use Rescuezilla to restore the image as normal.",
+                                "Ecryptfs encrypted images are not supported by current version of SeibuRescue.\n\nSupport for ecryptfs will be improved in a future version.\n\nHowever, as a temporary workaround, it is possible to carefully use the mount command line utility to decrypt the image, and then point SeibuRescue to this ecryptfs mount point and then use SeibuRescue to restore the image as normal.",
                             )
                         else:
                             self.current_page = Page.VERIFY_PROGRESS
@@ -874,7 +874,7 @@ class Handler:
                         ):
                             ErrorMessageModalPopup(
                                 self.builder,
-                                "Clone of drives without a partition table *and* no filesystem is not yet supported by current version of Rescuezilla.\n\nSupport for this will be added in a future version.",
+                                "Clone of drives without a partition table *and* no filesystem is not yet supported by current version of SeibuRescue.\n\nSupport for this will be added in a future version.",
                             )
                             return
                         self.clone_source_drive_key = key
@@ -1064,12 +1064,12 @@ class Handler:
                         if image.image_format == "FSARCHIVER_FORMAT":
                             ErrorMessageModalPopup(
                                 self.builder,
-                                "FSArchiver images cannot be mounted with Image Explorer with the current version of Rescuezilla. But FSArchiver images CAN be restored with the current version of Rescuezilla.\n\nSupport for exploring FSArchiver images may be added in a future version.",
+                                "FSArchiver images cannot be mounted with Image Explorer with the current version of SeibuRescue. But FSArchiver images CAN be restored with the current version of SeibuRescue.\n\nSupport for exploring FSArchiver images may be added in a future version.",
                             )
                         elif image.is_needs_decryption:
                             ErrorMessageModalPopup(
                                 self.builder,
-                                "Ecryptfs encrypted images are not supported by current version of Rescuezilla.\n\nSupport for ecryptfs will be improved in a future version.\n\nHowever, as a temporary workaround, it is possible to carefully use the mount command line utility to decrypt the image, and then point Rescuezilla to this ecryptfs mount point and then use Rescuezilla to access the image as normal.",
+                                "Ecryptfs encrypted images are not supported by current version of SeibuRescue.\n\nSupport for ecryptfs will be improved in a future version.\n\nHowever, as a temporary workaround, it is possible to carefully use the mount command line utility to decrypt the image, and then point SeibuRescue to this ecryptfs mount point and then use SeibuRescue to access the image as normal.",
                             )
                         else:
                             self.current_page = Page.IMAGE_EXPLORER_PARTITION_MOUNT
@@ -2224,7 +2224,7 @@ class Handler:
             AreYouSureModalPopup(
                 self.builder,
                 _(
-                    "Reminder: Mounting large gzipped-compressed images WILL be UNUSABLY slow.\n\ngzip is the default compression format used by Clonezilla and Rescuezilla. If Rescuezilla doesn't cleanly unmount the image being explored a reboot may be required.\n\nIf you want the best experience with very large images with this BETA feature, it is highly recommended you make an image WITHOUT COMPRESSION.\n\nAre you sure you want to continue?"
+                    "Reminder: Mounting large gzipped-compressed images WILL be UNUSABLY slow.\n\ngzip is the default compression format used by Clonezilla and SeibuRescue. If SeibuRescue doesn't cleanly unmount the image being explored a reboot may be required.\n\nIf you want the best experience with very large images with this BETA feature, it is highly recommended you make an image WITHOUT COMPRESSION.\n\nAre you sure you want to continue?"
                 ),
                 self._mount_partition_confirmation_callback,
             )

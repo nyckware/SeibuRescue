@@ -359,7 +359,7 @@ class ClonezillaImage:
                 # there is a "notes.txt" file created which explains this. To maximize compatibility, in this
                 # situation Rescuezilla v2.1+ creates a 1MB post-MBR  gap backup *and* a notes.txt file.
                 self.warning_dict[short_disk_device_node + "mbr"] = (
-                    'Backup is missing the "post-MBR gap" backup, most likely due to Clonezilla detecting a >1024MB gap between the MBR partition table and the first partition. Any GRUB bootloaders present will not restore correctly. In order to boot after restoring this backup, Clonezilla happens to workaround this situation by automatically re-installing GRUB, but current version of Rescuezilla does not implement this (but will in a future version). Clonezilla is available from within the Rescuezilla live environment by running `clonezilla` in a Terminal. See the following link for more information: https://github.com/rescuezilla/rescuezilla/issues/146'
+                    'Backup is missing the "post-MBR gap" backup, most likely due to Clonezilla detecting a >1024MB gap between the MBR partition table and the first partition. Any GRUB bootloaders present will not restore correctly. In order to boot after restoring this backup, Clonezilla happens to workaround this situation by automatically re-installing GRUB, but current version of SeibuRescue does not implement this (but will in a future version). Clonezilla is available from within the SeibuRescue live environment by running `clonezilla` in a Terminal. See the following link for more information: https://github.com/rescuezilla/rescuezilla/issues/146'
                 )
             else:
                 self.post_mbr_gap_dict = {

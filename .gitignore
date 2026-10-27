@@ -1,9 +1,30 @@
+# Build outputs and caches
+build/
 build/*
+pkg.cache/
 pkg.cache/*
+completed-artifacts/
+
+# ISO images and binary packages
+*.iso
+*.deb
+*.tar.*
+
+# Logs and temporary scripts
+*.log
+build_progress.log
+rebuild_fast.sh
+logo.svg
+
+# Python cache
+/**/__pycache__/
+/**/__pycache__
+/**/*.pyc
+/**/*.pyo
+
+# IDE and editors
+.vscode/
 /**/.idea/*
 /**/*~
 /**/*#
 /**/*.swp
-/**/__pycache__
-/**/*.pyc
-.vscode

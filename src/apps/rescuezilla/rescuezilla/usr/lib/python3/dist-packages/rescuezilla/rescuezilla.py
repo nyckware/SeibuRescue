@@ -58,7 +58,7 @@ def _exit(is_success):
 
 def main():
     if not is_root():
-        print("Rescuezilla must run as root.")
+        print("SeibuRescue must run as root.")
         exit(0)
 
     gettext_translation_search_path = (
@@ -75,12 +75,12 @@ def main():
     gettext.textdomain("rescuezilla")
 
     print(
-        "WARNING: Rescuezilla's command-line interface should be considered as EXPERIMENTAL and UNSTABLE"
+        "WARNING: SeibuRescue's command-line interface should be considered as EXPERIMENTAL and UNSTABLE"
     )
     print(
         "WARNING: Command-line interface behavior may change between versions without notice."
     )
-    parser = argparse.ArgumentParser(prog="rescuezillapy", description="Rescuezilla")
+    parser = argparse.ArgumentParser(prog="rescuezillapy", description="SeibuRescue")
     args = parse_arguments(parser=parser)
 
     memory_bus_width = Utility.get_memory_bus_width().strip()
@@ -250,7 +250,7 @@ def launch_gui(human_readable_version: str):
     win = builder.get_object("main_window")
     win.show()
 
-    nbd_module_missing_msg = "The 'nbd' (Network Block Device) kernel module is not loaded.\n\nRescuezilla will load it with modprobe, but it appears to take time to fully initialize.\n\nFor the best experience, add 'nbd' to /etc/modules and reboot before using Rescuezilla."
+    nbd_module_missing_msg = "The 'nbd' (Network Block Device) kernel module is not loaded.\n\nSeibuRescue will load it with modprobe, but it appears to take time to fully initialize.\n\nFor the best experience, add 'nbd' to /etc/modules and reboot before using SeibuRescue."
     process, flat_command_string, fail_description = Utility.run(
         "Querying for NBD module", ["lsmod"], use_c_locale=True
     )
@@ -266,7 +266,7 @@ def launch_gui(human_readable_version: str):
     # [1] Adapted from: https://github.com/zim-desktop-wiki/zim-desktop-wiki/blob/master/zim/gui/widgets.py
     banner_image_eventbox = builder.get_object("banner_image_eventbox")
     # Set the custom CSS using the GTK 'name' attribute (note this is different to the 'id' attribute)
-    css_text = "#banner { background-color: #345278; }"
+    css_text = "#banner { background-color: #233750; }"
     css_provider = Gtk.CssProvider()
     css_provider.load_from_data(css_text.encode("UTF-8"))
     banner_style = banner_image_eventbox.get_style_context()
