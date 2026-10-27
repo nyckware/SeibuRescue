@@ -30,6 +30,7 @@ ARCH="${ARCH:-INVALID}"
 URL="INVALID"
 
 # One-higher than directory containing this build script
+git config --global --add safe.directory "*" 2>/dev/null || true
 BASEDIR="$(git rev-parse --show-toplevel)"
 
 RESCUEZILLA_ISO_FILENAME=rescuezilla.$ARCH.$CODENAME.iso
@@ -182,11 +183,13 @@ cp /etc/hosts chroot/etc/hosts
 cp /etc/resolv.conf chroot/etc/resolv.conf
 
 # Copy the CHANGELOG
-rsync --archive "$BASEDIR/CHANGELOG" "$BUILD_DIRECTORY/chroot/usr/share/rescuezilla/"
-RET=$?
-if [[ $RET -ne 0 ]]; then
-    echo "Failed to copy"
-    exit 1
+mkdir -p "$BUILD_DIRECTORY/chroot/usr/share/rescuezilla/"
+if [ -f "$BASEDIR/CHANGELOG" ]; then
+    rsync --archive "$BASEDIR/CHANGELOG" "$BUILD_DIRECTORY/chroot/usr/share/rescuezilla/"
+elif [ -f "$BASEDIR/CHANGELOG.md" ]; then
+    rsync --archive "$BASEDIR/CHANGELOG.md" "$BUILD_DIRECTORY/chroot/usr/share/rescuezilla/"
+else
+    touch "$BUILD_DIRECTORY/chroot/usr/share/rescuezilla/CHANGELOG"
 fi
 
 # Synchronize apt package manager configuration files
