@@ -344,7 +344,15 @@ rm chroot/chroot-steps-part-1.sh chroot/chroot-steps-part-2.sh
 
 mkdir -p image/casper
 # The vmlinuz is a symlink to the exact kernel version, so no need to use the versioned glob.
-cp chroot/boot/vmlinuz image/casper/vmlinuz
+# Ubuntu 20.04+ (Focal, Jammy, Noble) puts symlinks in /boot/vmlinuz
+# Ubuntu 18.04 (Bionic) puts symlinks in /vmlinuz or files in /boot/vmlinuz-*
+if [ -f "chroot/boot/vmlinuz" ]; then
+    cp chroot/boot/vmlinuz image/casper/vmlinuz
+elif [ -e "chroot/vmlinuz" ]; then
+    cp -L chroot/vmlinuz image/casper/vmlinuz
+else
+    cp $(ls -t chroot/boot/vmlinuz-* | head -n 1) image/casper/vmlinuz
+fi
 if [[ $? -ne 0 ]]; then
     echo "Error: Failed to copy vmlinuz image."
     exit 1
@@ -352,7 +360,13 @@ fi
 chmod 644 image/casper/vmlinuz
 
 # The initrd.img is a symlink to the exact initrd version, so no need to use the versioned glob.
-cp chroot/boot/initrd.img image/casper/initrd.lz
+if [ -f "chroot/boot/initrd.img" ]; then
+    cp chroot/boot/initrd.img image/casper/initrd.lz
+elif [ -e "chroot/initrd.img" ]; then
+    cp -L chroot/initrd.img image/casper/initrd.lz
+else
+    cp $(ls -t chroot/boot/initrd.img-* | head -n 1) image/casper/initrd.lz
+fi
 if [[ $? -ne 0 ]]; then
     echo "Error: Failed to copy initrd image."
     exit 1
@@ -458,7 +472,7 @@ cp /usr/share/grub/unicode.pf2 "$BUILD_DIRECTORY/image/boot/grub/fonts"
 # Copy the GRUB EFI loader executable for i386 (there is no signed GRUB EFI versions available for i386). Multiple EFI bootloaders for different
 # CPU architectures can safely co-exist (given the different filenames), with the EFI firmware launching the correctly named executable.
 # Also, Bay Trail Intel Atom CPUs apparently have 64-bit CPUs with 32-bit UEFI, so having both i386 and amd64 executable on an amd64 ISO seems good.
-if [[ "$ARCH" == "amd64" ]]; then
+if [ "$ARCH" == "amd64" ] || [ "$ARCH" == "i386" ]; then
     cp /usr/lib/grub/i386-efi/monolithic/grubia32.efi "$BUILD_DIRECTORY/image/EFI/BOOT/BOOTIA32.EFI"
     # Deploy i386 GRUB EFI support files, including loadable modules
     cp -r /usr/lib/grub/i386-efi "$BUILD_DIRECTORY/image/boot/grub/"
