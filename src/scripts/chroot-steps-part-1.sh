@@ -569,10 +569,14 @@ common_pkgs=("discover"
              "flashrom"
              "hashdeep"
              "zstd"
-             "libxxhash0"
              "dislocker"
-             "btop"
 )
+
+if [ "$CODENAME" == "bionic" ]; then
+    common_pkgs=("${common_pkgs[@]}" "htop")
+else
+    common_pkgs=("${common_pkgs[@]}" "libxxhash0" "btop")
+fi
 
 # Install openssh-server only if the IS_INTEGRATION_TEST variable is enable
 if  [ "$IS_INTEGRATION_TEST" == "true" ]; then
