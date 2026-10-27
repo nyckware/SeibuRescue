@@ -278,7 +278,7 @@ class Handler:
             "The source partition table's final partition ({source}: {source_size} bytes) must refer to a region completely within the destination disk ({destination_size} bytes)."
         )
         self.larger_to_smaller_info_msg = _(
-            "Rescuezilla cannot yet automatically shrink partitions to restore from large disks to smaller disks. The final partition currently must always completely reside within the destination disk.\n\nCurrently the only way to restore to disks smaller than original is to first use GParted Partition Editor to shrink the final partition of the original disk before making a new backup image. Please read the following instructions for more information:\n\n{url}"
+            "SeibuRescue cannot yet automatically shrink partitions to restore from large disks to smaller disks. The final partition currently must always completely reside within the destination disk.\n\nCurrently the only way to restore to disks smaller than original is to first use GParted Partition Editor to shrink the final partition of the original disk before making a new backup image. Please read the following instructions for more information:\n\n{url}"
         ).format(
             url="https://github.com/rescuezilla/rescuezilla/wiki/HOWTO:-Restoring-to-a-smaller-disk.-Eg,-1000GB-HDD-to-500GB-SSD"
         )
@@ -554,7 +554,7 @@ class Handler:
                     )
                 elif self.current_page == Page.BACKUP_DESTINATION_FOLDER:
                     enduser_date = (
-                        datetime.today().strftime("%Y-%m-%d-%H%M") + "-img-rescuezilla"
+                        datetime.today().strftime("%Y-%m-%d-%H%M") + "-img-seiburescue"
                     )
                     self.builder.get_object("backup_name").set_text(enduser_date)
                     self.current_page = Page.BACKUP_IMAGE_NAME_SELECTION

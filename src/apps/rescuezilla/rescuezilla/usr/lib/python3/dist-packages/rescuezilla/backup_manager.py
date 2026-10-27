@@ -206,7 +206,7 @@ class BackupManager:
         with open(clonezilla_img_filepath, "w") as filehandle:
             try:
                 output = (
-                    "This image was saved by Rescuezilla at "
+                    "This image was saved by SeibuRescue at "
                     + enduser_date
                     + "\nSaved by "
                     + self.human_readable_version
@@ -540,7 +540,7 @@ class BackupManager:
                 ]
                 with open(filepath, "w") as filehandle:
                     filehandle.write(
-                        "Image was saved by these Rescuezilla-related packages:\n "
+                        "Image was saved by these SeibuRescue-related packages:\n "
                     )
                     for pkg in rescuezilla_package_list:
                         dpkg_process = subprocess.run(
@@ -885,9 +885,9 @@ class BackupManager:
 
             if post_mbr_gap_sector_count < 0:
                 failed_message = (
-                    "Rescuezilla was unable to identify the location of the first partition which indicates "
+                    "SeibuRescue was unable to identify the location of the first partition which indicates "
                     "the program was unable to gather information about the drive correctly. Please report "
-                    "this to the Rescuezilla developer, ideally with logs."
+                    "this to the SeibuRescue developer, ideally with logs."
                 )
                 with self.summary_message_lock:
                     self.summary_message += failed_message
