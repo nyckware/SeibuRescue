@@ -6,17 +6,18 @@ This guide provides a comprehensive, step-by-step tutorial on how to create full
 
 ## Table of Contents
 1. [Overview & Preparation](#1-overview--preparation)
-2. [Step 0: Starting SeibuRescue](#2-step-0-starting-seiburescue)
-3. [Step 1: Selecting the Source Drive](#3-step-1-selecting-the-source-drive)
-4. [Step 2: Selecting Partitions to Back Up](#4-step-2-selecting-partitions-to-back-up)
-5. [Step 3: Choosing the Destination Drive (Local or Network)](#5-step-3-choosing-the-destination-drive-local-or-network)
-6. [Step 4: Selecting the Target Folder](#6-step-4-selecting-the-target-folder)
-7. [Step 5: Naming the Backup Image](#7-step-5-naming-the-backup-image)
-8. [Step 6: Compression Settings (Zstandard, Gzip, or Uncompressed)](#8-step-6-compression-settings-zstandard-gzip-or-uncompressed)
-9. [Step 7: Confirming Configuration & Rescue Mode](#9-step-7-confirming-configuration--rescue-mode)
-10. [Step 8: Backup Execution & Monitoring](#10-step-8-backup-execution--monitoring)
-11. [Step 9: Completion & Verification](#11-step-9-completion--verification)
-12. [Best Practices & Troubleshooting](#12-best-practices--troubleshooting)
+2. [Step 1: Booting the PC from the SeibuRescue USB Drive](#2-step-1-booting-the-pc-from-the-seiburescue-usb-drive)
+3. [Step 2: Starting SeibuRescue](#3-step-2-starting-seiburescue)
+4. [Step 3: Selecting the Source Drive](#4-step-3-selecting-the-source-drive)
+5. [Step 4: Selecting Partitions to Back Up](#5-step-4-selecting-partitions-to-back-up)
+6. [Step 5: Choosing the Destination Drive (Local or Network)](#6-step-5-choosing-the-destination-drive-local-or-network)
+7. [Step 6: Selecting the Target Folder](#7-step-6-selecting-the-target-folder)
+8. [Step 7: Naming the Backup Image](#8-step-7-naming-the-backup-image)
+9. [Step 8: Compression Settings (Zstandard, Gzip, or Uncompressed)](#9-step-8-compression-settings-zstandard-gzip-or-uncompressed)
+10. [Step 9: Confirming Configuration & Rescue Mode](#10-step-9-confirming-configuration--rescue-mode)
+11. [Step 10: Backup Execution & Monitoring](#11-step-10-backup-execution--monitoring)
+12. [Step 11: Completion & Verification](#12-step-11-completion--verification)
+13. [Best Practices & Troubleshooting](#13-best-practices--troubleshooting)
 
 ---
 
@@ -32,16 +33,45 @@ SeibuRescue creates block-level, sector-accurate images of your storage drives. 
 
 ---
 
-## 2. Step 0: Starting SeibuRescue
+## 2. Step 1: Booting the PC from the SeibuRescue USB Drive
 
-When you boot your computer with the SeibuRescue USB drive:
+To perform a backup, the target computer must be started from the SeibuRescue USB flash drive.
+
+### Method A: Using the One-Time Boot Menu (Recommended)
+1. Completely shut down the computer.
+2. Insert your **SeibuRescue USB flash drive** into an available USB port.
+3. Power on the PC and immediately press the **Boot Menu key** repeatedly (once per second) until the boot selection menu appears:
+
+| Manufacturer | Typical Boot Menu Key |
+| :--- | :--- |
+| **Dell** | `F12` |
+| **HP / Compaq** | `F9` or `Esc` then `F9` |
+| **Lenovo / ThinkPad** | `F12` (or `Enter` then `F12`) |
+| **ASUS** | `F8` or `Esc` |
+| **Acer** | `F12` or `Esc` |
+| **Toshiba / Dynabook** | `F12` |
+| **Fujitsu** | `F12` |
+| **Industrial / Others** | `F11`, `F12`, `F8`, or `Esc` |
+
+4. Select your **USB drive** from the list and press **Enter**.
+
+### Method B: Changing Boot Priority in BIOS / UEFI Setup
+- If the Boot Menu does not appear, power on the PC and press **`Del`**, **`F2`**, or **`F10`** to enter BIOS Setup.
+- Under **Boot Priority**, move the USB drive to the **1st Boot Device** position.
+- On older industrial computers (Pentium 4 / Atom), ensure **Legacy Boot / CSM** is enabled.
+- Press **`F10`** (Save and Exit). The computer will reboot directly into SeibuRescue.
+
+---
+
+## 3. Step 2: Starting SeibuRescue
+
 1. The desktop environment loads automatically.
-2. The **SeibuRescue** application will launch on your screen. (If closed, double-click the **SeibuRescue** icon on the desktop).
+2. The **SeibuRescue** application will open on your screen. (If closed, double-click the **SeibuRescue** icon on the desktop).
 3. From the main menu, click the **Backup** button to begin the wizard.
 
 ---
 
-## 3. Step 1: Selecting the Source Drive
+## 4. Step 3: Selecting the Source Drive
 
 Select the physical storage drive that you want to back up.
 
@@ -55,7 +85,7 @@ Select the physical storage drive that you want to back up.
 
 ---
 
-## 4. Step 2: Selecting Partitions to Back Up
+## 5. Step 4: Selecting Partitions to Back Up
 
 Choose which partitions of the selected drive to include in the backup image.
 
@@ -68,7 +98,7 @@ Choose which partitions of the selected drive to include in the backup image.
 
 ---
 
-## 5. Step 3: Choosing the Destination Drive (Local or Network)
+## 6. Step 5: Choosing the Destination Drive (Local or Network)
 
 Select where the backup image files will be stored.
 
@@ -85,7 +115,7 @@ Select where the backup image files will be stored.
 
 ---
 
-## 6. Step 4: Selecting the Target Folder
+## 7. Step 6: Selecting the Target Folder
 
 Browse and select the directory on the destination drive where the backup folder will be created.
 
@@ -98,7 +128,7 @@ Browse and select the directory on the destination drive where the backup folder
 
 ---
 
-## 7. Step 5: Naming the Backup Image
+## 8. Step 7: Naming the Backup Image
 
 Specify the folder name for your new backup image.
 
@@ -116,7 +146,7 @@ Specify the folder name for your new backup image.
 
 ---
 
-## 8. Step 6: Compression Settings
+## 9. Step 8: Compression Settings (Zstandard, Gzip, or Uncompressed)
 
 Choose the compression algorithm and level for your backup files.
 
@@ -134,7 +164,7 @@ Choose the compression algorithm and level for your backup files.
 
 ---
 
-## 9. Step 7: Confirming Configuration & Rescue Mode
+## 10. Step 9: Confirming Configuration & Rescue Mode
 
 Review all settings before the backup begins.
 
@@ -152,7 +182,7 @@ Review all settings before the backup begins.
 
 ---
 
-## 10. Step 8: Backup Execution & Monitoring
+## 11. Step 10: Backup Execution & Monitoring
 
 SeibuRescue begins copying partition data.
 
@@ -167,7 +197,7 @@ SeibuRescue begins copying partition data.
 
 ---
 
-## 11. Step 9: Completion & Verification
+## 12. Step 11: Completion & Verification
 
 Once all partitions are processed, the success confirmation screen is displayed.
 
@@ -180,7 +210,7 @@ Once all partitions are processed, the success confirmation screen is displayed.
 
 ---
 
-## 12. Best Practices & Troubleshooting
+## 13. Best Practices & Troubleshooting
 
 ### Best Practices
 1. **Verify Your Backup**: Use the **Verify Image** feature on the SeibuRescue main menu to ensure the backup files are not corrupt and can be read completely.

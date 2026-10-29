@@ -33,7 +33,31 @@ Before unlocking a Windows BitLocker drive, ensure you have one of the following
 
 ---
 
-## 2. Step 1: Identifying Encrypted Drives & Partitions
+## 2. Step 1: Booting the PC from the SeibuRescue USB Drive
+
+To access and unlock encrypted storage drives, you must boot the computer from the SeibuRescue USB flash drive:
+
+### Method A: Using the One-Time Boot Menu (Recommended)
+1. Completely power off the target computer.
+2. Insert your **SeibuRescue USB flash drive** into an available USB port.
+3. Power on the PC and immediately tap the **Boot Menu key** repeatedly (once per second) until the boot device selection menu appears:
+   - **Dell**: `F12`
+   - **HP / Compaq**: `F9` or `Esc` then `F9`
+   - **Lenovo / ThinkPad**: `F12` (or `Enter` then `F12`)
+   - **ASUS**: `F8` or `Esc`
+   - **Acer / Toshiba / Fujitsu / NEC**: `F12`
+   - **Others / Industrial PCs**: `F11`, `F12`, `F8`, or `Esc`
+4. Select your **USB drive** from the list and press **Enter**.
+
+### Method B: Changing Boot Priority in BIOS / UEFI Setup
+- If the Boot Menu does not appear, power on the PC and press **`Del`**, **`F2`**, or **`F10`** to enter BIOS Setup.
+- In the **Boot Priority** settings, set the USB Flash Drive as the **1st Boot Device**.
+- On older systems, ensure **Legacy Boot / CSM** is enabled.
+- Press **`F10`** (Save and Exit). The PC will reboot into the SeibuRescue desktop.
+
+---
+
+## 3. Step 2: Identifying Encrypted Drives & Partitions
 
 Open the terminal (from application menu or right-click Desktop -> Open Terminal) and run:
 

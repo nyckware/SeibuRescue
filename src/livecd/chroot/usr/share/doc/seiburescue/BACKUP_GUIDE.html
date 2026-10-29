@@ -235,10 +235,55 @@ footer {
         </div>
     </div>
 
-    <!-- Step 1 -->
+    <!-- Step 1: Booting from USB -->
     <div class="step-card">
         <div class="step-header">
             <div class="step-num">1</div>
+            <h2 class="step-title">Boot the PC from the SeibuRescue USB Drive</h2>
+        </div>
+        <p>The target computer must be started from the SeibuRescue USB drive rather than its internal disk.</p>
+        
+        <h3>Method A: One-Time Boot Menu (Recommended)</h3>
+        <ol>
+            <li>Power off the computer completely.</li>
+            <li>Insert your <strong>SeibuRescue USB flash drive</strong> into an available USB port.</li>
+            <li>Power on the PC and immediately press the <strong>Boot Menu key</strong> repeatedly (once per second) until the menu appears:</li>
+        </ol>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Computer / Motherboard Brand</th>
+                    <th>Boot Menu Key</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Dell</strong></td><td><code>F12</code></td></tr>
+                <tr><td><strong>HP / Compaq</strong></td><td><code>F9</code> or <code>Esc</code> then <code>F9</code></td></tr>
+                <tr><td><strong>Lenovo / ThinkPad</strong></td><td><code>F12</code> (or <code>Enter</code> then <code>F12</code>)</td></tr>
+                <tr><td><strong>ASUS</strong></td><td><code>F8</code> or <code>Esc</code></td></tr>
+                <tr><td><strong>Acer</strong></td><td><code>F12</code> or <code>Esc</code></td></tr>
+                <tr><td><strong>Toshiba / Dynabook</strong></td><td><code>F12</code></td></tr>
+                <tr><td><strong>Fujitsu</strong></td><td><code>F12</code></td></tr>
+                <tr><td><strong>Industrial PCs / Others</strong></td><td><code>F11</code>, <code>F12</code>, <code>F8</code>, or <code>Esc</code></td></tr>
+            </tbody>
+        </table>
+
+        <p>Select your <strong>USB Flash Drive</strong> from the list and press <strong>Enter</strong>.</p>
+
+        <h3>Method B: Change Boot Priority in BIOS / UEFI</h3>
+        <ul>
+            <li>Power on the machine and press <strong><code>Del</code></strong>, <strong><code>F2</code></strong>, or <strong><code>F10</code></strong> to open BIOS Setup.</li>
+            <li>Under <strong>Boot Priority</strong>, move the USB drive to the <strong>1st Boot Device</strong> position.</li>
+            <li>On older industrial machines (Pentium 4 / Atom), ensure <strong>Legacy Boot / CSM</strong> is enabled.</li>
+            <li>Press <strong><code>F10</code></strong> (Save and Exit).</li>
+        </ul>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">2</div>
             <h2 class="step-title">Select Source Drive</h2>
         </div>
         <p>Choose the physical storage drive that you want to back up from the table.</p>
@@ -255,10 +300,10 @@ footer {
         </ul>
     </div>
 
-    <!-- Step 2 -->
+    <!-- Step 3 -->
     <div class="step-card">
         <div class="step-header">
-            <div class="step-num">2</div>
+            <div class="step-num">3</div>
             <h2 class="step-title">Select Partitions to Save</h2>
         </div>
         <p>Select which partitions on the disk to include in the backup image.</p>
@@ -274,10 +319,10 @@ footer {
         <p>Click <strong>Next &gt;</strong> to proceed.</p>
     </div>
 
-    <!-- Step 3 -->
+    <!-- Step 4 -->
     <div class="step-card">
         <div class="step-header">
-            <div class="step-num">3</div>
+            <div class="step-num">4</div>
             <h2 class="step-title">Choose Destination Drive (Local or Network)</h2>
         </div>
         <p>Specify where the backup image will be stored.</p>
@@ -294,10 +339,10 @@ footer {
         <p>Click <strong>Next &gt;</strong>.</p>
     </div>
 
-    <!-- Step 4 -->
+    <!-- Step 5 -->
     <div class="step-card">
         <div class="step-header">
-            <div class="step-num">4</div>
+            <div class="step-num">5</div>
             <h2 class="step-title">Select Target Folder</h2>
         </div>
         <p>Browse and pick the folder on the destination drive where the backup files will reside.</p>
@@ -311,10 +356,10 @@ footer {
         <p>Click <strong>Next &gt;</strong>.</p>
     </div>
 
-    <!-- Step 5 -->
+    <!-- Step 6 -->
     <div class="step-card">
         <div class="step-header">
-            <div class="step-num">5</div>
+            <div class="step-num">6</div>
             <h2 class="step-title">Name Your Backup Image</h2>
         </div>
         <p>Assign a descriptive name for your backup archive.</p>
@@ -332,10 +377,10 @@ footer {
         <p>Click <strong>Next &gt;</strong>.</p>
     </div>
 
-    <!-- Step 6 -->
+    <!-- Step 7 -->
     <div class="step-card">
         <div class="step-header">
-            <div class="step-num">6</div>
+            <div class="step-num">7</div>
             <h2 class="step-title">Customize Compression Settings</h2>
         </div>
         <p>Select the compression format and level.</p>
@@ -353,10 +398,10 @@ footer {
         <p>Click <strong>Next &gt;</strong>.</p>
     </div>
 
-    <!-- Step 7 -->
+    <!-- Step 8 -->
     <div class="step-card">
         <div class="step-header">
-            <div class="step-num">7</div>
+            <div class="step-num">8</div>
             <h2 class="step-title">Confirmation & Rescue Options</h2>
         </div>
         <p>Review the configured backup parameters before initiating the copy operation.</p>
@@ -373,10 +418,10 @@ footer {
         <p>Click <strong>Next &gt;</strong> to begin copying.</p>
     </div>
 
-    <!-- Step 8 -->
+    <!-- Step 9 -->
     <div class="step-card">
         <div class="step-header">
-            <div class="step-num">8</div>
+            <div class="step-num">9</div>
             <h2 class="step-title">Backup in Progress</h2>
         </div>
         <p>The Partclone imaging engine runs and displays live performance metrics.</p>
@@ -389,10 +434,10 @@ footer {
         <p>Monitor the transfer speed and remaining time. <em>Do not unplug storage media while the process is active.</em></p>
     </div>
 
-    <!-- Step 9 -->
+    <!-- Step 10 -->
     <div class="step-card">
         <div class="step-header">
-            <div class="step-num">9</div>
+            <div class="step-num">10</div>
             <h2 class="step-title">Completion & Summary</h2>
         </div>
         <p>When all partitions have been imaged, the summary dialog confirms the successful completion.</p>

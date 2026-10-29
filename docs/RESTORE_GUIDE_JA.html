@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>システムリストア（復元）完全マニュアル - SeibuRescue</title>
+    <style>
+:root {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-color: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --accent: #38bdf8;
+    --code-bg: #090d16;
+    --callout-info-bg: #1e3a5f;
+    --callout-danger-bg: #450a0a;
+    --callout-success-bg: #064e3b;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-color: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+        --accent: #0284c7;
+        --code-bg: #f1f5f9;
+        --callout-info-bg: #e0f2fe;
+        --callout-danger-bg: #fef2f2;
+        --callout-success-bg: #ecfdf5;
+    }
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Meiryo", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lang-switch a {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    background: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.lang-switch a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.container {
+    max-width: 950px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.hero h1 {
+    font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+}
+
+.hero p {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+}
+
+.step-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.75rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.step-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.75rem;
+}
+
+.step-num {
+    background: var(--accent);
+    color: #0f172a;
+    font-weight: 800;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.1rem;
+}
+
+.step-title {
+    font-size: 1.35rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+.screenshot-container {
+    margin: 1.5rem 0;
+    text-align: center;
+    background: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    overflow: hidden;
+}
+
+.screenshot-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+.screenshot-caption {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+}
+
+.callout {
+    border-left: 4px solid var(--accent);
+    background-color: var(--callout-info-bg);
+    padding: 1rem 1.25rem;
+    border-radius: 0 8px 8px 0;
+    margin: 1.25rem 0;
+}
+
+.callout-danger {
+    border-left-color: #ef4444;
+    background-color: var(--callout-danger-bg);
+}
+
+.callout-success {
+    border-left-color: #10b981;
+    background-color: var(--callout-success-bg);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+table, th, td {
+    border: 1px solid var(--border-color);
+}
+
+th, td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+th {
+    background-color: var(--code-bg);
+    color: var(--accent);
+}
+
+code {
+    background-color: var(--code-bg);
+    color: var(--accent);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+ul, ol {
+    padding-left: 1.5rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
+
+footer {
+    text-align: center;
+    padding: 3rem 0;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    margin-top: 4rem;
+}
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="brand">
+        🛡️ SeibuRescue - リストアマニュアル
+    </div>
+    <div class="lang-switch">
+        <a href="RESTORE_GUIDE.html">🇺🇸 English Manual</a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="hero">
+        <h1>システム＆ディスクリストア完全マニュアル（リストア専用版）</h1>
+        <p>バックアップイメージからディスク全体やOSを復元する手順を画面付きで解説</p>
+    </div>
+
+    <!-- Warnings -->
+    <div class="step-card">
+        <div class="step-header">
+            <h2 class="step-title">重要な注意事項</h2>
+        </div>
+        <div class="callout callout-danger">
+            <strong>⚠️ データ上書きに関する重大な警告：</strong>
+            <p>復元を実行すると、<strong>選択した復元先ドライブの既存データはすべて完全に消去・上書きされます</strong>。対象ドライブの選択に誤りがないか必ずご確認ください。</p>
+        </div>
+        <p>この<strong>リストア専用版（Restore-Only）</strong>は、工場の保守現場などで誤操作を防ぎ、迅速かつ安全に復旧作業が行えるよう操作画面が最適化されています。</p>
+    </div>
+
+    <!-- Step 1: Booting from USB -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">1</div>
+            <h2 class="step-title">手順 1: PC を SeibuRescue USB メモリから起動する</h2>
+        </div>
+        <p>復元作業を行うパソコンを、内蔵ディスクではなく SeibuRescue USB メモリから起動します。</p>
+        
+        <h3>方法 A: ブートメニュー（Boot Menu）を呼び出す（推奨）</h3>
+        <ol>
+            <li>対象のパソコンの電源を完全に切ります。</li>
+            <li><strong>SeibuRescue USB メモリ</strong> を PC の USB ポートに差し込みます。</li>
+            <li>電源ボタンを入れ、<strong>すぐに以下のキーを連打</strong>（1秒に1回程度）します：</li>
+        </ol>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>パソコンメーカー / マザーボード</th>
+                    <th>代表的なブートメニューキー</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Dell（デル）</strong></td><td><code>F12</code></td></tr>
+                <tr><td><strong>HP / Compaq</strong></td><td><code>F9</code> または <code>Esc</code> → <code>F9</code></td></tr>
+                <tr><td><strong>Lenovo / ThinkPad</strong></td><td><code>F12</code>（または <code>Enter</code> → <code>F12</code>）</td></tr>
+                <tr><td><strong>ASUS（エイスース）</strong></td><td><code>F8</code> または <code>Esc</code></td></tr>
+                <tr><td><strong>Acer（エイサー）</strong></td><td><code>F12</code> または <code>Esc</code></td></tr>
+                <tr><td><strong>東芝 / Dynabook</strong></td><td><code>F12</code></td></tr>
+                <tr><td><strong>富士通（Fujitsu）</strong></td><td><code>F12</code></td></tr>
+                <tr><td><strong>NEC</strong></td><td><code>F12</code></td></tr>
+                <tr><td><strong>産業用PC / その他</strong></td><td><code>F11</code>、<code>F12</code>、<code>F8</code>、または <code>Esc</code></td></tr>
+            </tbody>
+        </table>
+
+        <p>一覧から <strong>USB メモリ</strong> を選択して <strong>Enter</strong> を押します。</p>
+
+        <h3>方法 B: BIOS / UEFI 設定画面で起動順位を変更する</h3>
+        <ul>
+            <li>電源投入直後に <strong><code>Del</code></strong>、<strong><code>F2</code></strong>、または <strong><code>F10</code></strong> を連打して BIOS 画面を開きます。</li>
+            <li><strong>Boot Priority（起動優先順位）</strong> で、USB メモリを <strong>1st Boot Device</strong> に設定します。</li>
+            <li>古い産業用PC（Pentium 4、Atom世代）の場合は、<strong>Legacy Boot / CSM</strong> が有効になっていることを確認してください。</li>
+            <li><strong><code>F10</code></strong> キー（Save & Exit）を押して設定を保存します。</li>
+        </ul>
+    </div>
+
+    <!-- Step 2: Launching App -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">2</div>
+            <h2 class="step-title">手順 2: SeibuRescue の起動</h2>
+        </div>
+        <p>デスクトップが立ち上がると、自動的に <strong>SeibuRescue リストアウィザード</strong> が表示されます。</p>
+        <p><em>（誤って閉じてしまった場合は、デスクトップの <strong>SeibuRescue</strong> アイコンをダブルクリックしてください）。</em></p>
+    </div>
+
+    <!-- Step 3: Image Location -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">3</div>
+            <h2 class="step-title">手順 3: バックアップイメージの保存先を選択</h2>
+        </div>
+        <p>復元したいバックアップファイルがどこにあるかを指定します。</p>
+        
+        <div class="screenshot-container">
+            <img src="images/restore/restore_step1.png" alt="手順 1: 保存先場所の選択" onerror="this.parentElement.innerHTML='<p><em>[画像: 保存先場所の選択 (docs/images/restore/restore_step1.png)]</em></p>'">
+            <div class="screenshot-caption">手順 3: ローカル接続ストレージまたはネットワーク共有の選択</div>
+        </div>
+
+        <ul>
+            <li><strong>Connected directly to my computer：</strong> 外付けUSBハードディスク、別の内蔵ドライブ、またはUSBメモリ内のデータ領域（BACKUPS等）に保存されている場合はこちらを選択します。</li>
+            <li><strong>Shared over a network：</strong> <strong>SMB/CIFS（Windows共有 / NAS）</strong>、<strong>NFS</strong>、<strong>SSH/SFTP</strong> 経由でネットワークから復元できます。</li>
+        </ul>
+        <p><strong>Next（次へ）&gt;</strong> をクリックします。</p>
+    </div>
+
+    <!-- Step 4: Pick Image Folder -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">4</div>
+            <h2 class="step-title">手順 4: 復元するバックアップイメージの選択</h2>
+        </div>
+        <p>復元したいバックアップフォルダーを指定します。</p>
+        
+        <div class="screenshot-container">
+            <img src="images/restore/restore_step2.png" alt="手順 2: バックアップイメージフォルダーの選択" onerror="this.parentElement.innerHTML='<p><em>[画像: バックアップフォルダー選択 (docs/images/restore/restore_step2.png)]</em></p>'">
+            <div class="screenshot-caption">手順 4: イメージフォルダーの選択と整合性確認</div>
+        </div>
+
+        <p>SeibuRescue の標準的なフォルダー名は <code>YYYY-MM-DD-HHMM-img-seiburescue</code> です。目的のフォルダーをクリックして選択します。</p>
+        <p><strong>Next（次へ）&gt;</strong> をクリックします。</p>
+    </div>
+
+    <!-- Step 5: Select Destination Drive -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">5</div>
+            <h2 class="step-title">手順 5: 復元先ドライブ（書き込み対象）の選択</h2>
+        </div>
+        <p>データを復元して書き込む対象の物理ディスクを選択します。</p>
+        
+        <div class="screenshot-container">
+            <img src="images/restore/restore_step3.png" alt="手順 3: 復元先ドライブの選択" onerror="this.parentElement.innerHTML='<p><em>[画像: 復元先ドライブ選択 (docs/images/restore/restore_step3.png)]</em></p>'">
+            <div class="screenshot-caption">手順 5: 書き込み対象ドライブの選択</div>
+        </div>
+
+        <div class="callout callout-danger">
+            <strong>容量とモデル名を再確認してください：</strong> ここで選択したドライブの内容はすべて上書き・消去されます。
+        </div>
+        <p><strong>Next（次へ）&gt;</strong> をクリックします。</p>
+    </div>
+
+    <!-- Step 6: Partition Mapping -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">6</div>
+            <h2 class="step-title">手順 6: 復元パーティションの選択</h2>
+        </div>
+        <p>バックアップ内のどのパーティションを復元先に書き込むかを指定します。</p>
+        
+        <div class="screenshot-container">
+            <img src="images/restore/restore_step4.png" alt="手順 4: 復元パーティションの選択" onerror="this.parentElement.innerHTML='<p><em>[画像: パーティションマッピング (docs/images/restore/restore_step4.png)]</em></p>'">
+            <div class="screenshot-caption">手順 6: パーティションテーブルの復元と領域割り当て</div>
+        </div>
+
+        <ul>
+            <li><strong>Restore partition table（パーティションテーブルの復元）：</strong> システム全体を復元する場合はチェックを入れたままにします（ブートローダーやMBR/GPT情報が再構築されます）。</li>
+            <li><strong>すべてのパーティション：</strong> OSを丸ごと復旧するため、全パーティションにチェックを入れます。</li>
+        </ul>
+        <p><strong>Next（次へ）&gt;</strong> をクリックします。</p>
+    </div>
+
+    <!-- Step 7: Confirmation -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">7</div>
+            <h2 class="step-title">手順 7: 上書きの最終確認とリストア開始</h2>
+        </div>
+        <p>設定内容を確認し、ディスクへの書き込みを開始します。</p>
+        
+        <div class="screenshot-container">
+            <img src="images/restore/restore_step5.png" alt="手順 5: 復元設定の確認" onerror="this.parentElement.innerHTML='<p><em>[画像: 最終確認 (docs/images/restore/restore_step5.png)]</em></p>'">
+            <div class="screenshot-caption">手順 7: 設定概要の最終確認画面</div>
+        </div>
+
+        <p><strong>Next（次へ）&gt;</strong> をクリックすると、最終警告のポップアップダイアログが表示されます：</p>
+
+        <div class="screenshot-container">
+            <img src="images/restore/overwrite_are_you_sure.png" alt="上書き確認ダイアログ" onerror="this.parentElement.innerHTML='<p><em>[画像: 上書き確認ダイアログ (docs/images/restore/overwrite_are_you_sure.png)]</em></p>'">
+            <div class="screenshot-caption">上書き実行の確認ダイアログ</div>
+        </div>
+
+        <p><strong>Yes</strong> をクリックすると、復元先ディスクへの書き込みが開始されます。</p>
+    </div>
+
+    <!-- Step 8: Progress -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">8</div>
+            <h2 class="step-title">手順 8: 復元処理の実行と進捗確認</h2>
+        </div>
+        <p>Partclone により、バックアップデータが解凍されディスクに書き込まれます。</p>
+        
+        <div class="screenshot-container">
+            <img src="images/restore/restore_progress.png" alt="手順 8: 復元実行中" onerror="this.parentElement.innerHTML='<p><em>[画像: 復元進捗バー (docs/images/restore/restore_progress.png)]</em></p>'">
+            <div class="screenshot-caption">手順 8: 書き込み速度、経過時間、推定残り時間のリアルタイム表示</div>
+        </div>
+
+        <p><em>書き込み処理中は、PCの電源を切ったりケーブルを抜いたりしないでください。</em></p>
+    </div>
+
+    <!-- Step 9: Completion -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">9</div>
+            <h2 class="step-title">手順 9: 完了とパソコンの再起動</h2>
+        </div>
+        <p>すべての処理が完了すると、成功メッセージが表示されます。</p>
+        
+        <div class="screenshot-container">
+            <img src="images/restore/restore_summary.png" alt="手順 9: 復元完了サマリー" onerror="this.parentElement.innerHTML='<p><em>[画像: 完了サマリー (docs/images/restore/restore_summary.png)]</em></p>'">
+            <div class="screenshot-caption">手順 9: 正常終了ダイアログ</div>
+        </div>
+
+        <ol>
+            <li><strong>Exit（終了）</strong> をクリックします。</li>
+            <li>画面右下の電源アイコンから <strong>Reboot（再起動）</strong> を選択します。</li>
+            <li><strong>再起動中に SeibuRescue USB メモリを抜いてください。</strong></li>
+            <li>パソコンが復元されたオペレーティングシステムから正常に起動します。</li>
+        </ol>
+    </div>
+</div>
+
+<footer>
+    <p>SeibuRescue システムメンテナンス &bull; 西武商工株式会社</p>
+</footer>
+
+</body>
+</html>

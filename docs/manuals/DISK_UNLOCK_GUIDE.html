@@ -223,13 +223,14 @@ li {
 <hr />
 <h2 id="table-of-contents">Table of Contents</h2>
 <ol>
-<li><a href="#1-overview--prerequisites">Overview &amp; Prerequisites</a></li>
-<li><a href="#2-step-1-identifying-encrypted-drives--partitions">Step 1: Identifying Encrypted Drives &amp; Partitions</a></li>
-<li><a href="#3-method-1-gui-unlocking-with-gnome-disks">Method 1: GUI Unlocking with GNOME Disks</a></li>
-<li><a href="#4-method-2-unlocking-bitlocker-with-dislocker-recommended-for-windows-1011">Method 2: Unlocking BitLocker with <code>dislocker</code> (Recommended for Windows 10/11)</a></li>
-<li><a href="#5-method-3-unlocking-bitlocker-with-cryptsetup">Method 3: Unlocking BitLocker with <code>cryptsetup</code></a></li>
-<li><a href="#6-method-4-unlocking-linux-luks-partitions">Method 4: Unlocking Linux LUKS Partitions</a></li>
-<li><a href="#7-troubleshooting--frequently-asked-questions">Troubleshooting &amp; Frequently Asked Questions</a></li>
+<li><a href="#1-overview-prerequisites">Overview &amp; Prerequisites</a></li>
+<li><a href="#2-step-1-booting-the-pc-from-the-seiburescue-usb-drive">Step 1: Booting the PC from the SeibuRescue USB Drive</a></li>
+<li><a href="#3-step-2-identifying-encrypted-drives-partitions">Step 2: Identifying Encrypted Drives &amp; Partitions</a></li>
+<li><a href="#4-method-1-gui-unlocking-with-gnome-disks">Method 1: GUI Unlocking with GNOME Disks</a></li>
+<li><a href="#5-method-2-unlocking-bitlocker-with-dislocker-recommended-for-windows-1011">Method 2: Unlocking BitLocker with <code>dislocker</code> (Recommended for Windows 10/11)</a></li>
+<li><a href="#6-method-3-unlocking-bitlocker-with-cryptsetup">Method 3: Unlocking BitLocker with <code>cryptsetup</code></a></li>
+<li><a href="#7-method-4-unlocking-linux-luks-partitions">Method 4: Unlocking Linux LUKS Partitions</a></li>
+<li><a href="#8-troubleshooting-frequently-asked-questions">Troubleshooting &amp; Frequently Asked Questions</a></li>
 </ol>
 <hr />
 <h2 id="1-overview-prerequisites">1. Overview &amp; Prerequisites</h2>
@@ -246,7 +247,33 @@ li {
 - <strong>User Passphrase / Password</strong>: If configured instead of or in addition to TPM.
 - <strong>Recovery Key File (<code>.bek</code>)</strong>: If saved to a USB flash drive.</p>
 <hr />
-<h2 id="2-step-1-identifying-encrypted-drives-partitions">2. Step 1: Identifying Encrypted Drives &amp; Partitions</h2>
+<h2 id="2-step-1-booting-the-pc-from-the-seiburescue-usb-drive">2. Step 1: Booting the PC from the SeibuRescue USB Drive</h2>
+<p>To access and unlock encrypted storage drives, you must boot the computer from the SeibuRescue USB flash drive:</p>
+<h3 id="method-a-using-the-one-time-boot-menu-recommended">Method A: Using the One-Time Boot Menu (Recommended)</h3>
+<ol>
+<li>Completely power off the target computer.</li>
+<li>Insert your <strong>SeibuRescue USB flash drive</strong> into an available USB port.</li>
+<li>Power on the PC and immediately tap the <strong>Boot Menu key</strong> repeatedly (once per second) until the boot device selection menu appears:
+<ul>
+<li><strong>Dell</strong>: <code>F12</code></li>
+<li><strong>HP / Compaq</strong>: <code>F9</code> or <code>Esc</code> then <code>F9</code></li>
+<li><strong>Lenovo / ThinkPad</strong>: <code>F12</code> (or <code>Enter</code> then <code>F12</code>)</li>
+<li><strong>ASUS</strong>: <code>F8</code> or <code>Esc</code></li>
+<li><strong>Acer / Toshiba / Fujitsu / NEC</strong>: <code>F12</code></li>
+<li><strong>Others / Industrial PCs</strong>: <code>F11</code>, <code>F12</code>, <code>F8</code>, or <code>Esc</code></li>
+</ul>
+</li>
+<li>Select your <strong>USB drive</strong> from the list and press <strong>Enter</strong>.</li>
+</ol>
+<h3 id="method-b-changing-boot-priority-in-bios-uefi-setup">Method B: Changing Boot Priority in BIOS / UEFI Setup</h3>
+<ul>
+<li>If the Boot Menu does not appear, power on the PC and press <strong><code>Del</code></strong>, <strong><code>F2</code></strong>, or <strong><code>F10</code></strong> to enter BIOS Setup.</li>
+<li>In the <strong>Boot Priority</strong> settings, set the USB Flash Drive as the <strong>1st Boot Device</strong>.</li>
+<li>On older systems, ensure <strong>Legacy Boot / CSM</strong> is enabled.</li>
+<li>Press <strong><code>F10</code></strong> (Save and Exit). The PC will reboot into the SeibuRescue desktop.</li>
+</ul>
+<hr />
+<h2 id="3-step-2-identifying-encrypted-drives-partitions">3. Step 2: Identifying Encrypted Drives &amp; Partitions</h2>
 <p>Open the terminal (from application menu or right-click Desktop -&gt; Open Terminal) and run:</p>
 <pre><code class="language-bash">lsblk -f
 </code></pre>

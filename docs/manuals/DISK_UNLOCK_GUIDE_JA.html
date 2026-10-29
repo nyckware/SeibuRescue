@@ -223,13 +223,14 @@ li {
 <hr />
 <h2 id="_1">目次</h2>
 <ol>
-<li><a href="#1-概要と事前準備">概要と事前準備</a></li>
-<li><a href="#2-手順-1-暗号化パーティションの確認デバイス名特定">手順 1: 暗号化パーティションの確認（デバイス名特定）</a></li>
-<li><a href="#3-方法-1-guiツールdisks--ディスクによる解除">方法 1: GUIツール（Disks / ディスク）による解除</a></li>
-<li><a href="#4-方法-2-dislocker-による-bitlocker-解除windows-1011-推奨">方法 2: <code>dislocker</code> による BitLocker 解除（Windows 10/11 推奨）</a></li>
-<li><a href="#5-方法-3-cryptsetup-コマンドによる解除">方法 3: <code>cryptsetup</code> コマンドによる解除</a></li>
-<li><a href="#6-方法-4-linux-luks-暗号化パーティションの解除">方法 4: Linux LUKS 暗号化パーティションの解除</a></li>
-<li><a href="#7-トラブルシューティングとよくある質問faq">トラブルシューティングとよくある質問（FAQ）</a></li>
+<li><a href="#1">概要と事前準備</a></li>
+<li><a href="#2-1-pc-seiburescue-usb">手順 1: PC を SeibuRescue USB メモリから起動する（ブート設定）</a></li>
+<li><a href="#3-2">手順 2: 暗号化パーティションの確認（デバイス名特定）</a></li>
+<li><a href="#4-1-guidisks">方法 1: GUIツール（Disks / ディスク）による解除</a></li>
+<li><a href="#5-2-dislocker-bitlocker-windows-1011">方法 2: <code>dislocker</code> による BitLocker 解除（Windows 10/11 推奨）</a></li>
+<li><a href="#6-3-cryptsetup">方法 3: <code>cryptsetup</code> コマンドによる解除</a></li>
+<li><a href="#7-4-linux-luks">方法 4: Linux LUKS 暗号化パーティションの解除</a></li>
+<li><a href="#8-faq">トラブルシューティングとよくある質問（FAQ）</a></li>
 </ol>
 <hr />
 <h2 id="1">1. 概要と事前準備</h2>
@@ -246,7 +247,32 @@ li {
 - <strong>ユーザーパスワード</strong>: パスワード保護が設定されている場合。
 - <strong>回復キーファイル（<code>.bek</code>）</strong>: 初期設定時にUSBメモリ等へ保存されたファイル。</p>
 <hr />
-<h2 id="2-1">2. 手順 1: 暗号化パーティションの確認（デバイス名特定）</h2>
+<h2 id="2-1-pc-seiburescue-usb">2. 手順 1: PC を SeibuRescue USB メモリから起動する（ブート設定）</h2>
+<p>暗号化されたディスクを復号・アクセスするには、作業対象の PC を <strong>SeibuRescue USB メモリ</strong> から起動する必要があります：</p>
+<h3 id="a-boot-menu">方法 A: ブートメニュー（Boot Menu）を呼び出す（推奨・簡単）</h3>
+<ol>
+<li>対象パソコンの電源を完全に切ります（シャットダウン）。</li>
+<li><strong>SeibuRescue USB メモリ</strong> を PC の USB ポートに差し込みます。</li>
+<li>電源ボタンを押し、<strong>すぐに「ブートメニュー呼び出しキー」を連打</strong>（1秒に1回程度）します：
+<ul>
+<li><strong>Dell（デル）</strong>: <code>F12</code></li>
+<li><strong>HP / Compaq</strong>: <code>F9</code> または <code>Esc</code> を押した後に <code>F9</code></li>
+<li><strong>Lenovo / ThinkPad</strong>: <code>F12</code>（または <code>Enter</code> を押した後に <code>F12</code>）</li>
+<li><strong>ASUS（エイスース）</strong>: <code>F8</code> または <code>Esc</code></li>
+<li><strong>Acer / 東芝 / 富士通 / NEC</strong>: <code>F12</code></li>
+<li><strong>その他 / 産業用PC / 自作機</strong>: <code>F11</code>、<code>F12</code>、<code>F8</code>、または <code>Esc</code></li>
+</ul>
+</li>
+<li>画面にブートメニューが表示されたら、矢印キーで <strong>USB メモリ</strong>（例: <code>UEFI: USB Flash Drive</code> など）を選択して <strong>Enter</strong> を押します。</li>
+</ol>
+<h3 id="b-bios-uefi-boot-priority">方法 B: BIOS / UEFI 設定画面で起動優先順位（Boot Priority）を変更する</h3>
+<ul>
+<li>ブートメニューが表示されない場合は、電源投入直後に <strong><code>Del</code></strong>、<strong><code>F2</code></strong>、または <strong><code>F10</code></strong> を連打して BIOS 画面を開きます。</li>
+<li><strong>Boot Priority（起動優先順位）</strong> で、USB メモリを <strong>1st Boot Device</strong>（最優先）に設定します。</li>
+<li><strong><code>F10</code></strong> キー（Save &amp; Exit）を押して設定を保存します。PC が再起動し、SeibuRescue が立ち上がります。</li>
+</ul>
+<hr />
+<h2 id="3-2">3. 手順 2: 暗号化パーティションの確認（デバイス名特定）</h2>
 <p>ターミナルを開き（デスクトップ右クリック → 「Open Terminal」またはアプリケーションメニューから起動）、以下のコマンドを実行します：</p>
 <pre><code class="language-bash">lsblk -f
 </code></pre>
