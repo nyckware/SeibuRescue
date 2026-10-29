@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>バックアップ作成完全マニュアル - SeibuRescue</title>
+    <style>
+:root {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-color: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --accent: #38bdf8;
+    --code-bg: #090d16;
+    --callout-info-bg: #1e3a5f;
+    --callout-success-bg: #064e3b;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-color: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+        --accent: #0284c7;
+        --code-bg: #f1f5f9;
+        --callout-info-bg: #e0f2fe;
+        --callout-success-bg: #ecfdf5;
+    }
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Meiryo", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lang-switch a {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    background: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.lang-switch a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.container {
+    max-width: 950px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.hero h1 {
+    font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+}
+
+.hero p {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+}
+
+.step-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.75rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.step-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.75rem;
+}
+
+.step-num {
+    background: var(--accent);
+    color: #0f172a;
+    font-weight: 800;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.1rem;
+}
+
+.step-title {
+    font-size: 1.35rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+.screenshot-container {
+    margin: 1.5rem 0;
+    text-align: center;
+    background: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    overflow: hidden;
+}
+
+.screenshot-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+.screenshot-caption {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+}
+
+.callout {
+    border-left: 4px solid var(--accent);
+    background-color: var(--callout-info-bg);
+    padding: 1rem 1.25rem;
+    border-radius: 0 8px 8px 0;
+    margin: 1.25rem 0;
+}
+
+.callout-success {
+    border-left-color: #10b981;
+    background-color: var(--callout-success-bg);
+}
+
+code {
+    background-color: var(--code-bg);
+    color: var(--accent);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+ul, ol {
+    padding-left: 1.5rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
+
+footer {
+    text-align: center;
+    padding: 3rem 0;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    margin-top: 4rem;
+}
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="brand">
+        🛡️ SeibuRescue - バックアップマニュアル
+    </div>
+    <div class="lang-switch">
+        <a href="BACKUP_GUIDE.html">🇺🇸 English Manual</a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="hero">
+        <h1>ディスク＆システムバックアップ完全マニュアル</h1>
+        <p>SeibuRescue を使用したディスク全体・パーティションのイメージバックアップ手順（画面付き）</p>
+    </div>
+
+    <!-- Overview -->
+    <div class="step-card">
+        <div class="step-header">
+            <h2 class="step-title">概要と事前準備</h2>
+        </div>
+        <p><strong>SeibuRescue</strong> は、ディスクのセクター構造を正確に保持したイメージバックアップを作成します。<strong>Partclone</strong> エンジンにより、サポートされているファイルシステム（NTFS, FAT32, ext4, exFAT, XFS など）の使用済み領域のみを効率的に読み取るため、高速かつファイルサイズを最小限に抑えたバックアップが可能です。</p>
+        
+        <div class="callout">
+            <strong>事前チェックリスト：</strong>
+            <ul>
+                <li><strong>保存先ドライブ：</strong> 外付けUSBハードディスク、またはUSBメモリ内のデータ保存用パーティション（<code>BACKUPS</code> など）に十分な空き容量があることを確認してください。</li>
+                <li><strong>バックアップ元PC：</strong> Windowsが休止状態（ハイバネーション）や高速スタートアップ状態になっていないことを確認してください。</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">1</div>
+            <h2 class="step-title">手順 1: バックアップ元ドライブ（ソース）の選択</h2>
+        </div>
+        <p>バックアップを取りたい元の物理ディスクを一覧から選択します。</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_step1.png" alt="手順 1: バックアップ元ドライブの選択" onerror="this.parentElement.innerHTML='<p><em>[画像: 手順 1 - バックアップ元ドライブ選択 (docs/images/backup/backup_step1.png)]</em></p>'">
+            <div class="screenshot-caption">手順 1: 認識されている内蔵・外付けストレージドライブの一覧</div>
+        </div>
+
+        <ul>
+            <li>ドライブ番号、容量（例: <code>500GB</code>, <code>1TB</code>）、およびモデル名をよく確認します。</li>
+            <li>対象ドライブの行をクリックして選択状態にします。</li>
+            <li><strong>Next（次へ）&gt;</strong> をクリックします。</li>
+        </ul>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">2</div>
+            <h2 class="step-title">手順 2: 保存するパーティションの選択</h2>
+        </div>
+        <p>選択したドライブ内でバックアップに含めるパーティションを指定します。</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_step2.png" alt="手順 2: 保存するパーティションの選択" onerror="this.parentElement.innerHTML='<p><em>[画像: 手順 2 - パーティション選択 (docs/images/backup/backup_step2.png)]</em></p>'">
+            <div class="screenshot-caption">手順 2: パーティション選択一覧画面</div>
+        </div>
+
+        <div class="callout callout-success">
+            <strong>推奨設定：</strong> OSをそのまま復元可能な完全バックアップを作成する場合は、<strong>すべてのパーティションにチェックを入れたまま（デフォルト）</strong> にしてください。ブートローダー、EFIシステムパーティション、回復パーティションがすべて保存されます。
+        </div>
+        <p><strong>Next（次へ）&gt;</strong> をクリックします。</p>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">3</div>
+            <h2 class="step-title">手順 3: 保存先ドライブの選択（ローカルまたはネットワーク）</h2>
+        </div>
+        <p>作成するバックアップイメージの保存先を指定します。</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_step3.png" alt="手順 3: 保存先ドライブの選択" onerror="this.parentElement.innerHTML='<p><em>[画像: 手順 3 - 保存先ドライブ選択 (docs/images/backup/backup_step3.png)]</em></p>'">
+            <div class="screenshot-caption">手順 3: ローカル接続ストレージまたはネットワーク共有の選択</div>
+        </div>
+
+        <ul>
+            <li><strong>Connected directly to my computer（ローカル接続）：</strong> 外付けUSBドライブ、別ディスク、またはUSBメモリ内のデータ領域（BACKUPS等）に保存する場合はこちらを選択し、対象パーティションを選びます。</li>
+            <li><strong>Shared over a network（ネットワーク共有）：</strong> <strong>SMB/CIFS（Windows共有 / NAS）</strong>、<strong>NFS</strong>、または <strong>SSH/SFTP</strong> 経由で社内サーバー等へ直接保存できます。</li>
+        </ul>
+        <p><strong>Next（次へ）&gt;</strong> をクリックします。</p>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">4</div>
+            <h2 class="step-title">手順 4: 保存先フォルダーの指定</h2>
+        </div>
+        <p>保存先ドライブ内のどのフォルダーにイメージを作成するかを選択します。</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_step4.png" alt="手順 4: 保存先フォルダーの指定" onerror="this.parentElement.innerHTML='<p><em>[画像: 手順 4 - フォルダー指定 (docs/images/backup/backup_step4.png)]</em></p>'">
+            <div class="screenshot-caption">手順 4: ディレクトリ参照および新規フォルダー作成画面</div>
+        </div>
+
+        <p>保存したいフォルダー（例: <code>/mnt/backup/</code> や <code>Backups/</code>）へ移動します。フォルダーアイコンから新規フォルダーを作成することも可能です。</p>
+        <p><strong>Next（次へ）&gt;</strong> をクリックします。</p>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">5</div>
+            <h2 class="step-title">手順 5: バックアップイメージ名の設定</h2>
+        </div>
+        <p>作成するバックアップフォルダーの名前と説明を設定します。</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_step5.png" alt="手順 5: バックアップイメージ名の設定" onerror="this.parentElement.innerHTML='<p><em>[画像: 手順 5 - イメージ名設定 (docs/images/backup/backup_step5.png)]</em></p>'">
+            <div class="screenshot-caption">手順 5: イメージ名と補足メモの入力</div>
+        </div>
+
+        <ul>
+            <li><strong>デフォルト形式：</strong> SeibuRescue では日時を含んだ <code>YYYY-MM-DD-HHMM-img-seiburescue</code> が自動提案されます。</li>
+            <li><strong>名前のカスタマイズ：</strong> 機種名や管理番号（例: <code>CNC-Machine01-WinXP-FullBackup</code>）に変更可能です。</li>
+            <li><strong>Description（説明欄）：</strong> バージョン情報や作業者メモなどの補足情報を記録できます。</li>
+        </ul>
+        <p><strong>Next（次へ）&gt;</strong> をクリックします。</p>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">6</div>
+            <h2 class="step-title">手順 6: 圧縮形式の設定</h2>
+        </div>
+        <p>バックアップファイルの圧縮アルゴリズムと圧縮レベルを選択します。</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_step6_zstandard.png" alt="手順 6: 圧縮形式の設定" onerror="this.parentElement.innerHTML='<p><em>[画像: 手順 6 - 圧縮設定 (docs/images/backup/backup_step6_zstandard.png)]</em></p>'">
+            <div class="screenshot-caption">手順 6: Zstandard、Gzip、無圧縮から選択</div>
+        </div>
+
+        <ul>
+            <li><strong>Zstandard (zstd) - 推奨：</strong> 高速かつ優れた圧縮率を誇る最新形式です。レベル6〜16が推奨されます。</li>
+            <li><strong>Gzip (gzip)：</strong> 従来から広く使われている標準形式です。</li>
+            <li><strong>Uncompressed（無圧縮）：</strong> 圧縮を行いません。ディスク容量を多く消費しますが、処理速度を最優先にする場合に適しています。</li>
+        </ul>
+        <p><strong>Next（次へ）&gt;</strong> をクリックします。</p>
+    </div>
+
+    <!-- Step 7 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">7</div>
+            <h2 class="step-title">手順 7: 最終設定確認とレスキューモード</h2>
+        </div>
+        <p>バックアップ開始前の最終確認を行います。</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_step7.png" alt="手順 7: バックアップ設定の確認" onerror="this.parentElement.innerHTML='<p><em>[画像: 手順 7 - 設定最終確認 (docs/images/backup/backup_step7.png)]</em></p>'">
+            <div class="screenshot-caption">手順 7: 構成確認および完了後アクションの設定</div>
+        </div>
+
+        <ul>
+            <li><strong>Rescue Option：</strong> バックアップ元のディスクに不良セクタやファイルシステムの物理エラーがある場合のみ、「Rescue: Ignore filesystem inconsistencies and bad sectors」をチェックします。</li>
+            <li><strong>完了後の動作（On successful completion）：</strong> バックアップ終了時に「再起動」または「シャットダウン」を自動で行わせたい場合は選択します。</li>
+        </ul>
+        <p><strong>Next（次へ）&gt;</strong> をクリックすると、バックアップ処理が開始されます。</p>
+    </div>
+
+    <!-- Step 8 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">8</div>
+            <h2 class="step-title">手順 8: バックアップの実行と進捗確認</h2>
+        </div>
+        <p>Partclone によるパーティションデータの複製が進行します。</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_progress.png" alt="手順 8: バックアップ実行中" onerror="this.parentElement.innerHTML='<p><em>[画像: 手順 8 - リアルタイム進捗 (docs/images/backup/backup_progress.png)]</em></p>'">
+            <div class="screenshot-caption">手順 8: 転送速度、経過時間、推定残り時間のリアルタイム表示</div>
+        </div>
+
+        <p>進捗バーと転送速度を確認できます。<em>処理中にUSBメモリや接続ケーブルを絶対に抜かないでください。</em></p>
+    </div>
+
+    <!-- Step 9 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">9</div>
+            <h2 class="step-title">手順 9: 完了サマリー</h2>
+        </div>
+        <p>すべての処理が完了すると、成功メッセージが表示されます。</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_summary.png" alt="手順 9: バックアップ完了サマリー" onerror="this.parentElement.innerHTML='<p><em>[画像: 手順 9 - 完了サマリー (docs/images/backup/backup_summary.png)]</em></p>'">
+            <div class="screenshot-caption">手順 9: バックアップ正常終了の確認ダイアログ</div>
+        </div>
+
+        <p><strong>Exit（終了）</strong> をクリックするとメイン画面に戻ります。これでバックアップイメージが安全に保存されました。</p>
+    </div>
+</div>
+
+<footer>
+    <p>SeibuRescue システムメンテナンス &bull; 西武商工株式会社</p>
+</footer>
+
+</body>
+</html>

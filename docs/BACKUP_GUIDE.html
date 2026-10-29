@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Backup Guide - SeibuRescue</title>
+    <style>
+:root {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-color: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --accent: #38bdf8;
+    --code-bg: #090d16;
+    --callout-info-bg: #1e3a5f;
+    --callout-success-bg: #064e3b;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-color: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+        --accent: #0284c7;
+        --code-bg: #f1f5f9;
+        --callout-info-bg: #e0f2fe;
+        --callout-success-bg: #ecfdf5;
+    }
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lang-switch a {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    background: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.lang-switch a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.container {
+    max-width: 950px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.hero h1 {
+    font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+}
+
+.hero p {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+}
+
+.step-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.75rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.step-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.75rem;
+}
+
+.step-num {
+    background: var(--accent);
+    color: #0f172a;
+    font-weight: 800;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.1rem;
+}
+
+.step-title {
+    font-size: 1.35rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+.screenshot-container {
+    margin: 1.5rem 0;
+    text-align: center;
+    background: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    overflow: hidden;
+}
+
+.screenshot-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+.screenshot-caption {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+}
+
+.callout {
+    border-left: 4px solid var(--accent);
+    background-color: var(--callout-info-bg);
+    padding: 1rem 1.25rem;
+    border-radius: 0 8px 8px 0;
+    margin: 1.25rem 0;
+}
+
+.callout-success {
+    border-left-color: #10b981;
+    background-color: var(--callout-success-bg);
+}
+
+code {
+    background-color: var(--code-bg);
+    color: var(--accent);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+ul, ol {
+    padding-left: 1.5rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
+
+footer {
+    text-align: center;
+    padding: 3rem 0;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    margin-top: 4rem;
+}
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="brand">
+        🛡️ SeibuRescue - Backup Guide
+    </div>
+    <div class="lang-switch">
+        <a href="BACKUP_GUIDE_JA.html">🇯🇵 日本語マニュアル</a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="hero">
+        <h1>Complete Disk & System Backup Guide</h1>
+        <p>Step-by-step illustrated tutorial for creating full disk and partition images with SeibuRescue.</p>
+    </div>
+
+    <!-- Overview -->
+    <div class="step-card">
+        <div class="step-header">
+            <h2 class="step-title">Overview & Preparation</h2>
+        </div>
+        <p><strong>SeibuRescue</strong> creates sector-accurate block-level backup images. It uses <strong>Partclone</strong> to read and copy only the used blocks of supported filesystems (NTFS, FAT32, ext4, exFAT, XFS, etc.), making the backup process fast and space-efficient.</p>
+        
+        <div class="callout">
+            <strong>Checklist before you start:</strong>
+            <ul>
+                <li><strong>Destination Drive:</strong> Connect an external USB hard drive or verify that your USB stick has a secondary partition (e.g., <code>BACKUPS</code>) with sufficient free space.</li>
+                <li><strong>Source Drive:</strong> Make sure the computer is fully shut down (not in Windows hibernation or Fast Startup mode).</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">1</div>
+            <h2 class="step-title">Select Source Drive</h2>
+        </div>
+        <p>Choose the physical storage drive that you want to back up from the table.</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_step1.png" alt="Step 1: Select Drive To Backup" onerror="this.parentElement.innerHTML='<p><em>[Image: Step 1 - Select Drive To Backup (docs/images/backup/backup_step1.png)]</em></p>'">
+            <div class="screenshot-caption">Step 1: Listing of detected internal and external storage drives</div>
+        </div>
+
+        <ul>
+            <li>Examine the drive number, capacity (e.g., <code>500GB</code>, <code>1TB</code>), and model name carefully.</li>
+            <li>Click on the row corresponding to your source disk.</li>
+            <li>Click <strong>Next &gt;</strong> to continue.</li>
+        </ul>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">2</div>
+            <h2 class="step-title">Select Partitions to Save</h2>
+        </div>
+        <p>Select which partitions on the disk to include in the backup image.</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_step2.png" alt="Step 2: Select Partitions to Save" onerror="this.parentElement.innerHTML='<p><em>[Image: Step 2 - Select Partitions (docs/images/backup/backup_step2.png)]</em></p>'">
+            <div class="screenshot-caption">Step 2: Partition selection list</div>
+        </div>
+
+        <div class="callout callout-success">
+            <strong>Recommendation:</strong> Leave <strong>all partitions selected</strong> if you want a complete, bootable clone of your operating system (including bootloader, EFI system partition, and recovery volumes).
+        </div>
+        <p>Click <strong>Next &gt;</strong> to proceed.</p>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">3</div>
+            <h2 class="step-title">Choose Destination Drive (Local or Network)</h2>
+        </div>
+        <p>Specify where the backup image will be stored.</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_step3.png" alt="Step 3: Select Destination Drive" onerror="this.parentElement.innerHTML='<p><em>[Image: Step 3 - Destination Drive (docs/images/backup/backup_step3.png)]</em></p>'">
+            <div class="screenshot-caption">Step 3: Choosing local storage or network share</div>
+        </div>
+
+        <ul>
+            <li><strong>Connected directly to my computer:</strong> Choose this to save to an external USB drive, a secondary hard disk, or a dedicated data partition on your USB pendrive.</li>
+            <li><strong>Shared over a network:</strong> Allows saving directly to a NAS or file server via <strong>SMB/CIFS (Windows Share)</strong>, <strong>NFS</strong>, or <strong>SSH/SFTP</strong>.</li>
+        </ul>
+        <p>Click <strong>Next &gt;</strong>.</p>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">4</div>
+            <h2 class="step-title">Select Target Folder</h2>
+        </div>
+        <p>Browse and pick the folder on the destination drive where the backup files will reside.</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_step4.png" alt="Step 4: Select Destination Folder" onerror="this.parentElement.innerHTML='<p><em>[Image: Step 4 - Select Folder (docs/images/backup/backup_step4.png)]</em></p>'">
+            <div class="screenshot-caption">Step 4: Folder navigation and creation dialog</div>
+        </div>
+
+        <p>Navigate to your storage folder (e.g., <code>/mnt/backup/</code> or <code>Backups/</code>). You can also click the folder icon to create a new subfolder.</p>
+        <p>Click <strong>Next &gt;</strong>.</p>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">5</div>
+            <h2 class="step-title">Name Your Backup Image</h2>
+        </div>
+        <p>Assign a descriptive name for your backup archive.</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_step5.png" alt="Step 5: Name Your Backup" onerror="this.parentElement.innerHTML='<p><em>[Image: Step 5 - Backup Name (docs/images/backup/backup_step5.png)]</em></p>'">
+            <div class="screenshot-caption">Step 5: Image naming and optional description</div>
+        </div>
+
+        <ul>
+            <li><strong>Default Name:</strong> SeibuRescue automatically suggests a timestamped name: <code>YYYY-MM-DD-HHMM-img-seiburescue</code>.</li>
+            <li><strong>Custom Label:</strong> You can enter custom text (e.g., <code>Factory-CNC-Machine01-FullBackup</code>).</li>
+            <li><strong>Optional Description:</strong> Add details such as machine model, installed software, or technician notes.</li>
+        </ul>
+        <p>Click <strong>Next &gt;</strong>.</p>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">6</div>
+            <h2 class="step-title">Customize Compression Settings</h2>
+        </div>
+        <p>Select the compression format and level.</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_step6_zstandard.png" alt="Step 6: Customize Compression" onerror="this.parentElement.innerHTML='<p><em>[Image: Step 6 - Compression Settings (docs/images/backup/backup_step6_zstandard.png)]</em></p>'">
+            <div class="screenshot-caption">Step 6: Choosing compression format (Zstandard, Gzip, or Uncompressed)</div>
+        </div>
+
+        <ul>
+            <li><strong>Zstandard (zstd) - Recommended:</strong> Modern, high-performance compression algorithm offering optimal speed and small image sizes.</li>
+            <li><strong>Gzip (gzip):</strong> Traditional format for maximum backwards compatibility.</li>
+            <li><strong>Uncompressed:</strong> Disables compression for fastest raw throughput when disk space is abundant.</li>
+        </ul>
+        <p>Click <strong>Next &gt;</strong>.</p>
+    </div>
+
+    <!-- Step 7 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">7</div>
+            <h2 class="step-title">Confirmation & Rescue Options</h2>
+        </div>
+        <p>Review the configured backup parameters before initiating the copy operation.</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_step7.png" alt="Step 7: Confirm Backup Configuration" onerror="this.parentElement.innerHTML='<p><em>[Image: Step 7 - Confirmation Screen (docs/images/backup/backup_step7.png)]</em></p>'">
+            <div class="screenshot-caption">Step 7: Final summary and automated completion actions</div>
+        </div>
+
+        <ul>
+            <li><strong>Rescue Option:</strong> Check *"Rescue: Ignore filesystem inconsistencies and bad sectors"* ONLY if copying from a damaged or failing drive.</li>
+            <li><strong>On Completion Action:</strong> Optionally set the PC to automatically reboot or shut down when the backup finishes.</li>
+        </ul>
+        <p>Click <strong>Next &gt;</strong> to begin copying.</p>
+    </div>
+
+    <!-- Step 8 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">8</div>
+            <h2 class="step-title">Backup in Progress</h2>
+        </div>
+        <p>The Partclone imaging engine runs and displays live performance metrics.</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_progress.png" alt="Step 8: Backup in Progress" onerror="this.parentElement.innerHTML='<p><em>[Image: Step 8 - Progress Bar (docs/images/backup/backup_progress.png)]</em></p>'">
+            <div class="screenshot-caption">Step 8: Real-time progress bar, transfer rate, and time estimates</div>
+        </div>
+
+        <p>Monitor the transfer speed and remaining time. <em>Do not unplug storage media while the process is active.</em></p>
+    </div>
+
+    <!-- Step 9 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-num">9</div>
+            <h2 class="step-title">Completion & Summary</h2>
+        </div>
+        <p>When all partitions have been imaged, the summary dialog confirms the successful completion.</p>
+        
+        <div class="screenshot-container">
+            <img src="images/backup/backup_summary.png" alt="Step 9: Backup Summary" onerror="this.parentElement.innerHTML='<p><em>[Image: Step 9 - Completion Summary (docs/images/backup/backup_summary.png)]</em></p>'">
+            <div class="screenshot-caption">Step 9: Success dialog confirming the backup is ready</div>
+        </div>
+
+        <p>Click <strong>Exit</strong> to return to the main menu. Your backup is now safely stored and can be restored at any time.</p>
+    </div>
+</div>
+
+<footer>
+    <p>SeibuRescue System Maintenance &bull; Seibu Shoko Co., Ltd.</p>
+</footer>
+
+</body>
+</html>
